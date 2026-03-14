@@ -18,7 +18,7 @@ source "$SCRIPT_DIR/json-import-utils.sh"
 # ==============================================================================
 # CONSTANTS
 # ==============================================================================
-SQL_SCRIPTS_DIR="//sql/scripts/mandats"
+SQL_SCRIPTS_DIR="$SRC_DIR/sql/scripts/mandats"
 
 SCHEMA_NAME="mandats.schema.sql"
 MANDATS_JSON="mandats.json"

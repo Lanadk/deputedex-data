@@ -18,7 +18,7 @@ source "$SCRIPT_DIR/json-import-utils.sh"
 # ==============================================================================
 # CONSTANTS
 # ==============================================================================
-SQL_SCRIPTS_DIR="//sql/scripts/acteurs"
+SQL_SCRIPTS_DIR="$SRC_DIR/sql/scripts/acteurs"  # ✅
 
 SCHEMA_NAME="acteurs.schema.sql"
 ACTEURS_JSON="acteurs.json"

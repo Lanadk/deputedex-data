@@ -18,7 +18,7 @@ source "$SCRIPT_DIR/json-import-utils.sh"
 # ==============================================================================
 # CONSTANTS
 # ==============================================================================
-SQL_SCRIPTS_DIR="//sql/scripts/scrutins"
+SQL_SCRIPTS_DIR="$SRC_DIR/sql/scripts/scrutins"
 
 SCHEMA_NAME="scrutins.schema.sql"
 DEPUTES_JSON="deputes.json"
