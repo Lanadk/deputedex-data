@@ -5,7 +5,7 @@ import { IExtractor } from '../../infrastructure/IExtractor';
 import {extractNilableValue} from "../../infrastructure/impl/xml-nil.utils";
 
 export class AmendementExtractor implements IExtractor {
-    constructor(private readonly legislatureSnapshot: number) {}
+    constructor() {}
 
 
     private amendements: Amendement[] = [];

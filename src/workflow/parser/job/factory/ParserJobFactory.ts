@@ -18,7 +18,6 @@ import {DirectorySource} from "../../infrastructure/impl/DirectorySource";
 import {JsonFileWriter} from "../../infrastructure/impl/JsonFileWriter";
 import {BatchProcessor} from "../../domain/models/BatchProcessor";
 import {ParseFilesUseCase} from "../../domain/usecases/ParseFilesUseCase";
-import {MandatsExtractor} from "../../domain/models/MandatExtractor";
 
 export type ParserDomain = 'acteurs' | 'scrutins' | 'amendements';
 
