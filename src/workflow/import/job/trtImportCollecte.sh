@@ -23,6 +23,7 @@ SCRIPTS=(
   "$SCRIPT_DIR/unit-import/acteurs-import.sh"
   "$SCRIPT_DIR/unit-import/scrutins-import.sh"
   "$SCRIPT_DIR/unit-import/mandats-import.sh"
+  "$SCRIPT_DIR/unit-import/amendements-import.sh"
   # ajouter ici les futurs imports
 )
 

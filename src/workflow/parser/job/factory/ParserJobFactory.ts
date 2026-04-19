@@ -2,12 +2,14 @@ import {IExtractor} from "../../infrastructure/IExtractor";
 import {Logger, LogLevel} from "../../../../utils/logger";
 import {ActeursExtractor} from "../../domain/models/ActeursExtractor";
 import {ScrutinsExtractor} from "../../domain/models/ScrutinsExtractor";
+import { AmendementExtractor } from '../../domain/models/AmendementExtractor';
 import {
     acteursSourceDirectoryName,
     baseInData,
     baseOutData,
     outTableDirectoryName,
-    scrutinsSourceDirectoryName
+    scrutinsSourceDirectoryName,
+    amendementsSourceDirectoryName
 } from "../const";
 import {ParserJob} from "../parser/ParserJob";
 import path from "path";
@@ -18,7 +20,7 @@ import {BatchProcessor} from "../../domain/models/BatchProcessor";
 import {ParseFilesUseCase} from "../../domain/usecases/ParseFilesUseCase";
 import {MandatsExtractor} from "../../domain/models/MandatExtractor";
 
-export type ParserDomain = 'acteurs' | 'scrutins';
+export type ParserDomain = 'acteurs' | 'scrutins' | 'amendements';
 
 export interface ParserJobRunnerConfig {
     domain: ParserDomain;
@@ -31,6 +33,7 @@ export class ParserJobFactory {
     private static readonly SOURCE_DIRS: Record<ParserDomain, string> = {
         acteurs: acteursSourceDirectoryName,
         scrutins: scrutinsSourceDirectoryName,
+        amendements: amendementsSourceDirectoryName,
     };
 
     // ==============================================================================
@@ -40,8 +43,8 @@ export class ParserJobFactory {
         switch (domain) {
             case 'acteurs':  return new ActeursExtractor(legislatureSnapshot);
             case 'scrutins': return new ScrutinsExtractor(legislatureSnapshot);
-        }
-    }
+            case "amendements": return new AmendementExtractor(legislatureSnapshot);
+        }}
 
     static create(config: ParserJobRunnerConfig): { job: ParserJob; outputDir: string } {
         const logger = new Logger(config.logLevel || LogLevel.INFO);
@@ -66,6 +69,8 @@ export class ParserJobFactory {
         return { job, outputDir };
     }
 
+
+
     static async runAll(logLevel: LogLevel = LogLevel.INFO): Promise<void> {
         const logger = new Logger(logLevel);
         logger.info('======== Starting Parser Jobs ========');
@@ -79,7 +84,7 @@ export class ParserJobFactory {
 
         logger.info(`🏛️  Législatures trouvées : ${legislatures.join(', ')}`);
 
-        const domains: ParserDomain[] = ['acteurs', 'scrutins'];
+        const domains: ParserDomain[] = ['acteurs', 'scrutins', 'amendements'];
 
         for (const legislature of legislatures) {
             logger.info(`\n📅 Legislature ${legislature}`);

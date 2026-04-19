@@ -458,3 +458,55 @@ model RefActeursPhotos {
   @@index([legislature])
   @@map("ref_acteurs_photos")
 }
+
+// ============================================
+// AMENDEMENTS
+// ============================================
+
+model amendements {
+  uid         String  @id
+  chronotag   String?
+  legislature String?
+
+  numero_long   String?
+  numero_ordre  String?
+  numero_rect   String?
+  organe_examen String?
+
+  examen_ref    String?
+  texte_leg_ref String?
+
+  acteur_uid           String?
+  groupe_politique_ref String?
+  type_auteur          String?
+
+  division_titre       String?
+  division_type        String?
+  division_avant_apres String?
+  alinea_numero        String?
+
+  dispositif      String?
+  expose_sommaire String?
+
+  date_depot        DateTime? @db.Date
+  date_publication  DateTime? @db.Date
+  date_sort         DateTime? @db.Timestamptz
+  sort              String?
+  etat_code         String?
+  etat_libelle      String?
+  sous_etat_code    String?
+  sous_etat_libelle String?
+
+  article99 Boolean?
+
+  co_auteurs amendements_co_auteurs[]
+}
+
+model amendements_co_auteurs {
+  amendement_uid String
+  acteur_uid     String
+
+  amendement amendements @relation(fields: [amendement_uid], references: [uid])
+
+  @@id([amendement_uid, acteur_uid])
+}

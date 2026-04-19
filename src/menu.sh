@@ -16,12 +16,15 @@ run_download_all()              { npx ts-node ./workflow/download/job/trtCollect
 run_parser_all()                { npx ts-node ./workflow/parser/job/trtCheckCollecte.ts; }
 run_parser_acteurs()            { npx ts-node ./workflow/parser/job/unit-parser/parseActeurs.ts; }
 run_parser_scrutins()           { npx ts-node ./workflow/parser/job/unit-parser/parseScrutins.ts; }
+run_parser_amendements()        { npx ts-node ./workflow/parser/job/unit-parser/parseAmendements.ts; }
 
 # -- Import --------------------------------------------------------------------
 run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
 run_import_acteurs()            { ./workflow/import/job/unit-import/acteurs-import.sh; }
 run_import_scrutins()           { ./workflow/import/job/unit-import/scrutins-import.sh; }
 run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
+run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
+
 
 # -- Aggregation ---------------------------------------------------------------
 run_aggregate_all_one_shot()    { ./workflow/aggregat/job/trtAggregatCollecte-oneshot.sh; }
@@ -97,6 +100,7 @@ parser_menu() {
         echo "2) Parse Acteurs"
         echo "3) Parse Scrutins"
         echo "4) Parse Mandats"
+        echo "5) Parse Amendements"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -107,6 +111,7 @@ parser_menu() {
             2) run_parser_acteurs ;;
             3) run_parser_scrutins ;;
             4) run_parser_mandats ;;
+            5) run_parser_amendements ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac
@@ -123,6 +128,7 @@ import_menu() {
         echo "2) Import Acteurs"
         echo "3) Import Scrutins"
         echo "4) Import Mandats"
+        echo "5) Import Amendements"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -133,6 +139,7 @@ import_menu() {
             2) run_import_acteurs ;;
             3) run_import_scrutins ;;
             4) run_import_mandats ;;
+            5) run_import_amendements ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac
