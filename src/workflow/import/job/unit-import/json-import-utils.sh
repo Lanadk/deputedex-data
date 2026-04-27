@@ -184,8 +184,9 @@ _import_part_file() {
 # ==============================================================================
 run_sql_file() {
     local file=$1
-    cat "$file" | docker exec -i "$DB_CONTAINER" \
-        psql -U "$DB_USER_WRITER" -d "$DB_NAME"
+    docker exec -i "$DB_CONTAINER" \
+        psql -U "$DB_USER_WRITER" -d "$DB_NAME" \
+        -f "$file"
 }
 
 # ==============================================================================

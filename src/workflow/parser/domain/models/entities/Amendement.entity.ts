@@ -40,9 +40,15 @@ export interface Amendement {
 
     // divers
     article99: boolean | null;
+
+    row_hash: string;
+    legislature_snapshot: number;
 }
 
 export interface AmendementCoAuteur {
     amendement_uid: string;
     acteur_uid: string;
+
+    row_hash: string;
+    legislature_snapshot: number;
 }

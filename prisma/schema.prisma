@@ -499,12 +499,19 @@ model amendements {
 
   article99 Boolean?
 
+  row_hash             String   @db.Text
+  legislature_snapshot Int      @db.Integer
+
   co_auteurs amendements_co_auteurs[]
+
 }
 
 model amendements_co_auteurs {
   amendement_uid String
   acteur_uid     String
+
+  row_hash             String @db.Text
+  legislature_snapshot Int      @db.Integer
 
   amendement amendements @relation(fields: [amendement_uid], references: [uid])
 
