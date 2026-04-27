@@ -31,7 +31,8 @@ ON CONFLICT (legislature_id) DO UPDATE SET number = EXCLUDED.number;
 INSERT INTO ref_data_domains (code, description)
 VALUES
     ('acteurs', 'Deputes sénateurs ministres mandats organes'),
-    ('scrutins', 'Votes et scrutins publics')
+    ('scrutins', 'Votes et scrutins publics'),
+    ('amendements', 'Ammendements législatifs')
 ON CONFLICT (code) DO NOTHING;
 
 -- ============================================
@@ -51,6 +52,13 @@ VALUES
         (SELECT id FROM param_legislatures WHERE number = 16),
         'https://data.assemblee-nationale.fr/static/openData/repository/16/loi/scrutins/Scrutins.json.zip',
         'Scrutins.json.zip'
+    ),
+    (
+        (SELECT id FROM ref_data_domains WHERE code = 'amendements'),
+        (SELECT id FROM param_legislatures WHERE number = 16),
+        'https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip'
+,
+        'Amendements.json.zip'
     )
 ON CONFLICT DO NOTHING;
 
@@ -71,6 +79,12 @@ VALUES
         (SELECT id FROM param_legislatures WHERE number = 17),
         'https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip',
         'Scrutins.json.zip'
+    ),
+    (
+        (SELECT id FROM ref_data_domains WHERE code = 'amendements'),
+        (SELECT id FROM param_legislatures WHERE number = 17),
+        'https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip',
+        'Amendements.json.zip'
     )
 ON CONFLICT DO NOTHING;
 
