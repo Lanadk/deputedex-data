@@ -40,6 +40,9 @@ run_update_all_referentials_tables() { ./workflow/referentials/job/trtUpdateRefe
 # -- Enrichment  ---------------------------------------------------------------
 run_all_enrichment_tables() { ./workflow/enrichment/job/trtEnrichmentCollecte.sh; }
 
+# -- Dataset update monitoring  ---------------------------------------------------------------
+run_monitor_dataset_update() { npx ts-node ./workflow/_common/job/logDatasetUpdate.ts; }
+
 # ==============================================================================
 # WORKFLOWS
 # ==============================================================================
@@ -52,6 +55,8 @@ workflow_init() {
     run_update_all_referentials_tables
     run_all_enrichment_tables
     run_aggregate_all_one_shot
+
+    run_monitor_dataset_update
     echo "✅ Init Workflow completed"
 }
 
@@ -63,6 +68,8 @@ workflow_update() {
     run_update_all_referentials_tables
     run_all_enrichment_tables
     run_aggregate_all_refresh
+
+    run_monitor_dataset_update
     echo "✅ Update Workflow completed"
 }
 
