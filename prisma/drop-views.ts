@@ -39,6 +39,10 @@ async function main() {
         DROP MATERIALIZED VIEW IF EXISTS agg_groupes_stats_tranche_age CASCADE;
         DROP MATERIALIZED VIEW IF EXISTS mv_groupes_presidents CASCADE;
         
+     -- CALENDAR ACTIVITY VIEWS
+        DROP MATERIALIZED VIEW IF EXISTS agg_activity_calendar_mv CASCADE;
+        DROP MATERIALIZED VIEW IF EXISTS agg_activity_calendar_details_mv CASCADE;
+        
      -- ASSEMBLEE VIEWS
         DROP MATERIALIZED VIEW IF EXISTS mv_assemblee_presidents CASCADE;
         DROP MATERIALIZED VIEW IF EXISTS agg_assemblee_stats_participation_legislature CASCADE;

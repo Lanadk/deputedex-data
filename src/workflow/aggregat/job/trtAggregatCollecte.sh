@@ -12,6 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS=(
   "$SCRIPT_DIR/acteurs/aggregation.sh"
   "$SCRIPT_DIR/groups/aggregation.sh"
+  "$SCRIPT_DIR/calendar/aggregation.sh"
   # ajouter ici les futurs domaines
 )
 
