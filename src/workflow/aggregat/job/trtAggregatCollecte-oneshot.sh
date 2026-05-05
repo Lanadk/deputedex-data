@@ -13,6 +13,7 @@ SCRIPTS=(
   "$SCRIPT_DIR/acteurs/aggregation-oneshot.sh"
   "$SCRIPT_DIR/groups/aggregation-oneshot.sh"
   "$SCRIPT_DIR/calendar/aggregation-oneshot.sh"
+  "$SCRIPT_DIR/deputes/aggregation-oneshot.sh"
   # ajouter ici les futurs domaines
 )
 

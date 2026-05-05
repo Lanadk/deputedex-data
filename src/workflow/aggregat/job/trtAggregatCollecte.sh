@@ -13,6 +13,7 @@ SCRIPTS=(
   "$SCRIPT_DIR/acteurs/aggregation.sh"
   "$SCRIPT_DIR/groups/aggregation.sh"
   "$SCRIPT_DIR/calendar/aggregation.sh"
+  "$SCRIPT_DIR/deputes/aggregation.sh"
   # ajouter ici les futurs domaines
 )
 
