@@ -17,6 +17,7 @@ run_parser_all()                { npx ts-node ./workflow/parser/job/trtCheckColl
 run_parser_acteurs()            { npx ts-node ./workflow/parser/job/unit-parser/parseActeurs.ts; }
 run_parser_scrutins()           { npx ts-node ./workflow/parser/job/unit-parser/parseScrutins.ts; }
 run_parser_amendements()        { npx ts-node ./workflow/parser/job/unit-parser/parseAmendements.ts; }
+run_parser_dossiers()        { npx ts-node ./workflow/parser/job/unit-parser/parseDossiers.ts; }
 
 # -- Import --------------------------------------------------------------------
 run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
@@ -108,6 +109,7 @@ parser_menu() {
         echo "3) Parse Scrutins"
         echo "4) Parse Mandats"
         echo "5) Parse Amendements"
+        echo "6) Parse Dossiers"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -119,6 +121,7 @@ parser_menu() {
             3) run_parser_scrutins ;;
             4) run_parser_mandats ;;
             5) run_parser_amendements ;;
+            6) run_parser_dossiers ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac

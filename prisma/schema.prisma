@@ -77,8 +77,8 @@ model MonitorDataDownload {
 }
 
 model MonitorDataSetsUpdate {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now()) @map("created_at")
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("monitor_data_set_update")
 }
@@ -506,11 +506,10 @@ model amendements {
 
   article99 Boolean?
 
-  row_hash             String   @db.Text
-  legislature_snapshot Int      @db.Integer
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
 
   co_auteurs amendements_co_auteurs[]
-
 }
 
 model amendements_co_auteurs {
@@ -518,9 +517,157 @@ model amendements_co_auteurs {
   acteur_uid     String
 
   row_hash             String @db.Text
-  legislature_snapshot Int      @db.Integer
+  legislature_snapshot Int    @db.Integer
 
   amendement amendements @relation(fields: [amendement_uid], references: [uid])
 
   @@id([amendement_uid, acteur_uid])
+}
+
+
+// ============================================
+// DOSSIER PARLEMENTAIRE
+// ============================================
+model DossierParlementaire {
+  uid String @id
+
+  legislature Int
+  titre String
+  titre_chemin String?
+  senat_chemin String?
+  procedure_code    String?
+  procedure_libelle String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  initiateurs DossierInitiateur[]
+  actes       ActeLegislatif[]
+
+  @@map("dossier_parlementaire")
+}
+
+model DossierInitiateur {
+  id String @id @default(cuid())
+  dossier_uid String
+
+  acteur_uid String?
+  mandat_uid String?
+  organe_uid String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  dossier DossierParlementaire @relation(fields: [dossier_uid], references: [uid])
+
+  @@index([dossier_uid])
+  @@map("dossier_initiateur")
+}
+
+model ActeLegislatif {
+  uid String @id
+
+  dossier_uid String
+  parent_acte_uid String?
+
+  type_acte String
+  code_acte String?
+  nom_canonique String?
+  libelle_court String?
+  organe_uid String?
+  date_acte DateTime?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  rapporteurs ActeRapporteur[]
+  textes_associes ActeTexteAssocie[]
+  reunion ActeReunion?
+  votes ActeVote[]
+  decision ActeDecision?
+
+  parent_acte ActeLegislatif? @relation("ActeHierarchy", fields: [parent_acte_uid], references: [uid])
+  enfants ActeLegislatif[] @relation("ActeHierarchy")
+  dossier DossierParlementaire @relation(fields: [dossier_uid], references: [uid])
+
+  @@index([dossier_uid])
+  @@index([parent_acte_uid])
+  @@map("acte_legislatif")
+}
+
+model ActeRapporteur {
+  acte_uid String
+  acteur_uid String
+
+  type_rapporteur String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@id([acte_uid, acteur_uid])
+  @@map("acte_rapporteur")
+}
+
+model ActeTexteAssocie {
+  id Int @id @default(autoincrement())
+
+  acte_uid String
+
+  reference_texte String
+  type_texte String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@index([acte_uid])
+  @@map("acte_texte_associe")
+}
+
+model ActeReunion {
+  acte_uid String @id
+
+  reunion_ref String?
+  odj_ref String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@index([acte_uid])
+  @@map("acte_reunion")
+}
+
+model ActeVote {
+  id Int @id @default(autoincrement())
+
+  acte_uid String
+  vote_ref String
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@index([acte_uid])
+  @@map("acte_vote")
+}
+
+model ActeDecision {
+  acte_uid String @id
+
+  famille_code String?
+  libelle String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@index([acte_uid])
+  @@map("acte_decision")
 }
