@@ -53,8 +53,6 @@ export interface ActeRapporteur {
 }
 
 export interface ActeTexteAssocie {
-    id?: number;
-
     acte_uid: string;
 
     reference_texte: string;

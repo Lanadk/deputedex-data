@@ -58,9 +58,8 @@ export class DossiersParlementairesExtractor implements IExtractor {
 
     getTables(): Record<string, any[]> {
         return {
-            dossierParlementaire: this.dossiers,
-            dossierInitiateur: this.initiateurs,
-
+            dossiersParlementaire: this.dossiers,
+            dossiersInitiateur: this.initiateurs,
             acteLegislatif: this.actes,
             acteRapporteur: this.rapporteurs,
             acteTexteAssocie: this.textesAssocies,

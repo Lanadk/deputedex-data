@@ -25,6 +25,7 @@ run_import_acteurs()            { ./workflow/import/job/unit-import/acteurs-impo
 run_import_scrutins()           { ./workflow/import/job/unit-import/scrutins-import.sh; }
 run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
 run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
+run_import_dossiers()        { ./workflow/import/job/unit-import/dossiers-import.sh; }
 
 
 # -- Aggregation ---------------------------------------------------------------
@@ -139,6 +140,7 @@ import_menu() {
         echo "3) Import Scrutins"
         echo "4) Import Mandats"
         echo "5) Import Amendements"
+        echo "6) Import Dossiers"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -150,6 +152,7 @@ import_menu() {
             3) run_import_scrutins ;;
             4) run_import_mandats ;;
             5) run_import_amendements ;;
+            6) run_import_dossiers;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac

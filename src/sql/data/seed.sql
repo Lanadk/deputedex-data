@@ -57,7 +57,7 @@ VALUES
     (
         (SELECT id FROM ref_data_domains WHERE code = 'amendements'),
         (SELECT id FROM param_legislatures WHERE number = 16),
-        'https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip',
+        'https://data.assemblee-nationale.fr/static/openData/repository/16/loi/amendements_div_legis/Amendements.json.zip',
         'Amendements.json.zip'
     ),
     (

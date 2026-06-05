@@ -15,18 +15,18 @@ source "$SCRIPT_DIR/json-import-utils.sh"
 # CONSTANTS
 # ==============================================================================
 
-SQL_SCRIPTS_DIR="/sql/scripts/dossiers"
+SQL_SCRIPTS_DIR="//sql/scripts/dossiers"
 
 SCHEMA_NAME="dossiers.schema.sql"
 
-DOSSIERS_JSON="dossiersParlementaires.json"
-INITIATEURS_JSON="dossierInitiateurs.json"
-ACTES_JSON="actesLegislatifs.json"
-RAPPORTEURS_JSON="acteRapporteurs.json"
-TEXTES_JSON="acteTextesAssocies.json"
-REUNIONS_JSON="acteReunions.json"
-DECISIONS_JSON="acteDecisions.json"
-VOTES_JSON="acteVotes.json"
+DOSSIERS_JSON="dossiersParlementaire.json"
+INITIATEURS_JSON="dossiersInitiateur.json"
+ACTES_JSON="acteLegislatif.json"
+RAPPORTEURS_JSON="acteRapporteur.json"
+TEXTES_JSON="acteTexteAssocie.json"
+REUNIONS_JSON="acteReunion.json"
+DECISIONS_JSON="acteDecision.json"
+VOTES_JSON="acteVote.json"
 
 # ==============================================================================
 # ARGUMENTS

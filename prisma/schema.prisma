@@ -548,7 +548,6 @@ model DossierParlementaire {
 }
 
 model DossierInitiateur {
-  id String @id @default(cuid())
   dossier_uid String
 
   acteur_uid String?
@@ -560,6 +559,7 @@ model DossierInitiateur {
 
   dossier DossierParlementaire @relation(fields: [dossier_uid], references: [uid])
 
+  @@unique([row_hash])
   @@index([dossier_uid])
   @@map("dossier_initiateur")
 }
@@ -611,10 +611,7 @@ model ActeRapporteur {
 }
 
 model ActeTexteAssocie {
-  id Int @id @default(autoincrement())
-
   acte_uid String
-
   reference_texte String
   type_texte String?
 
@@ -623,13 +620,12 @@ model ActeTexteAssocie {
 
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
-  @@index([acte_uid])
+  @@id([acte_uid, reference_texte])
   @@map("acte_texte_associe")
 }
 
 model ActeReunion {
-  acte_uid String @id
-
+  acte_uid String
   reunion_ref String?
   odj_ref String?
 
@@ -638,13 +634,11 @@ model ActeReunion {
 
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
-  @@index([acte_uid])
+  @@id([acte_uid])
   @@map("acte_reunion")
 }
 
 model ActeVote {
-  id Int @id @default(autoincrement())
-
   acte_uid String
   vote_ref String
 
@@ -653,12 +647,12 @@ model ActeVote {
 
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
-  @@index([acte_uid])
+  @@id([acte_uid, vote_ref])
   @@map("acte_vote")
 }
 
 model ActeDecision {
-  acte_uid String @id
+  acte_uid String
 
   famille_code String?
   libelle String?
@@ -668,6 +662,6 @@ model ActeDecision {
 
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
-  @@index([acte_uid])
+  @@id([acte_uid])
   @@map("acte_decision")
 }
