@@ -33,7 +33,8 @@ VALUES
     ('acteurs', 'Deputes sénateurs ministres mandats organes'),
     ('scrutins', 'Votes et scrutins publics'),
     ('amendements', 'Ammendements législatifs'),
-    ('dossiers_legislatifs', 'Dossier législatif')
+    ('dossiers_legislatifs', 'Dossier législatif'),
+    ('documents_legislatifs', 'Documents législatif')
 ON CONFLICT (code) DO NOTHING;
 
 -- ============================================
