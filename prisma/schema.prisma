@@ -665,3 +665,158 @@ model ActeDecision {
   @@id([acte_uid])
   @@map("acte_decision")
 }
+
+// ============================================
+// DOCUMENTS PARLEMENTAIRE
+// ============================================
+model documents {
+  uid String @id
+  legislature Int?
+
+  denomination_structurelle String?
+  provenance String?
+  titre_principal String?
+  titre_principal_court String?
+
+  dossier_ref String?
+  redacteur String?
+
+  date_creation DateTime? @db.Date
+  date_depot DateTime? @db.Date
+  date_publication DateTime? @db.Date
+  date_publication_web DateTime? @db.Date
+
+  num_notice String?
+  formule String?
+  adoption_conforme Boolean?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  classification    documents_classifications?
+  auteurs           documents_auteurs[]
+  co_signataires    documents_co_signataires[]
+  organes_referents documents_organes_referents[]
+  imprimerie        documents_imprimeries?
+  depot_amendements documents_depot_amendements[]
+
+  @@unique([row_hash])
+  @@map("documents_parlementaires")
+}
+
+model documents_classifications {
+  document_uid String
+
+  depot_code String?
+  depot_libelle String?
+
+  classe_code String?
+  classe_libelle String?
+
+  type_code String?
+  type_libelle String?
+
+  sous_type_code String?
+  sous_type_libelle String?
+  sous_type_libelle_edition String?
+
+  statut_adoption_code String?
+  statut_adoption_libelle String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@id([document_uid])
+  @@map("documents_classifications")
+}
+
+model documents_auteurs {
+  id           Int    @id @default(autoincrement())
+  document_uid String
+
+  acteur_uid String?
+  organe_uid String?
+  qualite    String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([document_uid])
+  @@map("documents_auteurs")
+}
+
+model documents_co_signataires {
+  id           Int    @id @default(autoincrement())
+  document_uid String
+
+  acteur_uid String?
+  organe_uid String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([document_uid])
+  @@map("documents_co_signataires")
+}
+
+model documents_organes_referents {
+  document_uid String
+  organe_uid   String
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@id([document_uid, organe_uid])
+  @@map("documents_organes_referents")
+}
+
+model documents_imprimeries {
+  document_uid String @id
+
+  issn String?
+  isbn String?
+  dian String?
+
+  nb_page Int?
+  prix    String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@map("documents_imprimeries")
+}
+
+model documents_depot_amendements {
+  id           Int    @id @default(autoincrement())
+  document_uid String
+
+  type_depot String  // 'SEANCE' | 'COMMISSION'
+  organe_uid String?
+  amendable  Boolean?
+
+  date_limite_depot DateTime? @db.Date
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([document_uid])
+  @@map("documents_depot_amendements")
+}

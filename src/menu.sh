@@ -27,7 +27,7 @@ run_import_scrutins()           { ./workflow/import/job/unit-import/scrutins-imp
 run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
 run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
 run_import_dossiers()        { ./workflow/import/job/unit-import/dossiers-import.sh; }
-
+run_import_documents()        { ./workflow/import/job/unit-import/documents-import.sh; }
 
 # -- Aggregation ---------------------------------------------------------------
 run_aggregate_all_one_shot()    { ./workflow/aggregat/job/trtAggregatCollecte-oneshot.sh; }
@@ -144,6 +144,7 @@ import_menu() {
         echo "4) Import Mandats"
         echo "5) Import Amendements"
         echo "6) Import Dossiers"
+        echo "7) Import Documents"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -156,6 +157,7 @@ import_menu() {
             4) run_import_mandats ;;
             5) run_import_amendements ;;
             6) run_import_dossiers;;
+            7) run_import_documents;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac

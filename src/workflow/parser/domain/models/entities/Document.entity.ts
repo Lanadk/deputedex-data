@@ -2,8 +2,6 @@ export interface DocumentParlementaire {
     uid: string;
     legislature: number;
 
-    xsi_type: string;
-
     denomination_structurelle: string | null;
     provenance: string | null;
 

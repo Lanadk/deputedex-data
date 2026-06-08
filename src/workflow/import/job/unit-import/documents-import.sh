@@ -123,7 +123,7 @@ for LEGISLATURE_DIR in "$TABLES_DIR"/*/; do
 
     echo "📥 [RAW] Importing documents..."
     import_json_to_raw_table \
-        "$LEGISLATURE_DIR/DOCUMENTS_JSON" \
+        "$LEGISLATURE_DIR/$DOCUMENTS_JSON" \
         "documents_raw" \
         "project_documents"
     echo "✓ [RAW] documents done"
@@ -131,42 +131,42 @@ for LEGISLATURE_DIR in "$TABLES_DIR"/*/; do
 
     echo "📥 [RAW] Importing documents classifications..."
     import_json_to_raw_table \
-        "$LEGISLATURE_DIR/DOCUMENTS_CLASSIFICATIONS_JSON" \
+        "$LEGISLATURE_DIR/$DOCUMENTS_CLASSIFICATIONS_JSON" \
         "documents_classifications_raw" \
         "project_documents_classifications"
     echo "✓ [RAW] co-auteurs done"
 
     echo "📥 [RAW] Importing documents auteurs..."
     import_json_to_raw_table \
-        "$LEGISLATURE_DIR/DOCUMENTS_AUTEURS_JSON" \
+        "$LEGISLATURE_DIR/$DOCUMENTS_AUTEURS_JSON" \
         "documents_auteurs_raw" \
         "project_documents_auteurs"
     echo "✓ [RAW] co-auteurs done"
 
     echo "📥 [RAW] Importing documents co-signataires..."
     import_json_to_raw_table \
-        "$LEGISLATURE_DIR/DOCUMENTS_CO_SIGNATAIRES_JSON" \
+        "$LEGISLATURE_DIR/$DOCUMENTS_CO_SIGNATAIRES_JSON" \
         "documents_co_signataires_raw" \
         "project_documents_co_signataires"
     echo "✓ [RAW] co-auteurs done"
 
     echo "📥 [RAW] Importing documents organes referents..."
     import_json_to_raw_table \
-        "$LEGISLATURE_DIR/DOCUMENTS_ORGANES_REFERENTS_JSON" \
+        "$LEGISLATURE_DIR/$DOCUMENTS_ORGANES_REFERENTS_JSON" \
         "documents_organes_referents_raw" \
         "project_documents_organes_referents"
     echo "✓ [RAW] co-auteurs done"
 
     echo "📥 [RAW] Importing documents imprimeries..."
     import_json_to_raw_table \
-        "$LEGISLATURE_DIR/DOCUMENTS_IMPRIMERIES_JSON" \
+        "$LEGISLATURE_DIR/$DOCUMENTS_IMPRIMERIES_JSON" \
         "documents_imprimeries_raw" \
         "project_documents_imprimeries"
     echo "✓ [RAW] co-auteurs done"
 
     echo "📥 [RAW] Importing documents depots amendements..."
     import_json_to_raw_table \
-        "$LEGISLATURE_DIR/DOCUMENTS_DEPOTS_AMENDEMENTS_JSON" \
+        "$LEGISLATURE_DIR/$DOCUMENTS_DEPOTS_AMENDEMENTS_JSON" \
         "documents_depots_amendements_raw" \
         "project_documents_depots_amendements"
     echo "✓ [RAW] co-auteurs done"

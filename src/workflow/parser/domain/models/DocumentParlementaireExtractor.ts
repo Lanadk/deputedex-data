@@ -82,7 +82,6 @@ export class DocumentParlementaireExtractor implements IExtractor{
             uid: document.uid,
 
             legislature: Number(document.legislature),
-            xsi_type: document["@xsi:type"],
             denomination_structurelle: extractNilableValue(document.denominationStructurelle),
             provenance:extractNilableValue(document.provenance),
             titre_principal: extractNilableValue(document.titres?.titrePrincipal),
