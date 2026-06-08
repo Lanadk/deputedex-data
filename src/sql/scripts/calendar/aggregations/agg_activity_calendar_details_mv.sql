@@ -103,4 +103,4 @@ FROM amendements_co_auteurs ca
 WHERE a.date_depot IS NOT NULL;
 
 CREATE INDEX activity_details_mv_lookup
-    ON activity_calendar_details_mv (entity_id, entity_type, activity_date, legislature);
+    ON agg_activity_calendar_details_mv (entity_id, entity_type, activity_date, legislature);

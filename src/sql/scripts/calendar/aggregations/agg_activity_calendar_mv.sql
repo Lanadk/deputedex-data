@@ -104,13 +104,13 @@ GROUP BY ca.acteur_uid, a.date_depot, a.legislature_snapshot;
 
 
 CREATE UNIQUE INDEX activity_calendar_mv_uq
-    ON activity_calendar_mv (entity_type, entity_id, activity_date, domain, legislature);
+    ON agg_activity_calendar_mv (entity_type, entity_id, activity_date, domain, legislature);
 
 CREATE INDEX activity_calendar_mv_entity_idx
-    ON activity_calendar_mv (entity_id, entity_type, legislature);
+    ON agg_activity_calendar_mv (entity_id, entity_type, legislature);
 
 CREATE INDEX activity_calendar_mv_date_idx
-    ON activity_calendar_mv (activity_date);
+    ON agg_activity_calendar_mv (activity_date);
 
 CREATE INDEX activity_calendar_mv_domain_idx
-    ON activity_calendar_mv (domain);
+    ON agg_activity_calendar_mv (domain);
