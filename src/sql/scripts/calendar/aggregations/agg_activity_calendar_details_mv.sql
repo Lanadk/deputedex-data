@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW activity_calendar_details_mv AS
+CREATE MATERIALIZED VIEW agg_activity_calendar_details_mv AS
 
 -- =========================
 -- DEPUTE : VOTES
