@@ -3,7 +3,7 @@ import {
     DocumentClassification,
     DocumentCoSignataire, DocumentDepotAmendement, DocumentImprimerie, DocumentOrganeReferent,
     DocumentParlementaire
-} from "./entities/Document.entity";
+} from "./entities/DocumentParlementaire.entity";
 import {extractNilableValue} from "../../infrastructure/impl/xml-nil.utils";
 import {computeRowHash} from "../../../../utils/hash";
 import {IExtractor} from "../../infrastructure/IExtractor";

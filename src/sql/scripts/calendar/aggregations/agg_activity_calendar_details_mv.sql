@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW activity_calendar_details_mv AS
+CREATE MATERIALIZED VIEW agg_activity_calendar_details_mv AS
 
 -- =========================
 -- DEPUTE : VOTES
@@ -102,5 +102,5 @@ FROM amendements_co_auteurs ca
          JOIN amendements a ON a.uid = ca.amendement_uid
 WHERE a.date_depot IS NOT NULL;
 
-CREATE INDEX activity_details_mv_lookup
-    ON activity_calendar_details_mv (entity_id, entity_type, activity_date, legislature);
+CREATE INDEX agg_activity_calendar_details_mv_lookup
+    ON agg_activity_calendar_details_mv (entity_id, entity_type, activity_date, legislature);

@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW activity_calendar_mv AS
+CREATE MATERIALIZED VIEW agg_activity_calendar_mv AS
 
     -- =========================
 -- GROUPE : SCRUTINS
@@ -103,14 +103,14 @@ GROUP BY ca.acteur_uid, a.date_depot, a.legislature_snapshot;
 
 
 
-CREATE UNIQUE INDEX activity_calendar_mv_uq
-    ON activity_calendar_mv (entity_type, entity_id, activity_date, domain, legislature);
+CREATE UNIQUE INDEX agg_activity_calendar_mv_uq
+    ON agg_activity_calendar_mv (entity_type, entity_id, activity_date, domain, legislature);
 
-CREATE INDEX activity_calendar_mv_entity_idx
-    ON activity_calendar_mv (entity_id, entity_type, legislature);
+CREATE INDEX agg_activity_calendar_mv_entity_idx
+    ON agg_activity_calendar_mv (entity_id, entity_type, legislature);
 
-CREATE INDEX activity_calendar_mv_date_idx
-    ON activity_calendar_mv (activity_date);
+CREATE INDEX agg_activity_calendar_mv_date_idx
+    ON agg_activity_calendar_mv (activity_date);
 
-CREATE INDEX activity_calendar_mv_domain_idx
-    ON activity_calendar_mv (domain);
+CREATE INDEX agg_activity_calendar_mv_domain_idx
+    ON agg_activity_calendar_mv (domain);
