@@ -108,7 +108,6 @@ CREATE TABLE documents_classifications_snapshot
 
 CREATE TABLE documents_auteurs_snapshot
 (
-    id                         SERIAL PRIMARY KEY,
     document_uid               TEXT,
 
     acteur_uid                 TEXT,
@@ -121,7 +120,6 @@ CREATE TABLE documents_auteurs_snapshot
 
 CREATE TABLE documents_co_signataires_snapshot
 (
-    id                         SERIAL PRIMARY KEY,
     document_uid               TEXT,
 
     acteur_uid                 TEXT,
@@ -159,7 +157,6 @@ CREATE TABLE documents_imprimeries_snapshot
 
 CREATE TABLE documents_depots_amendements_snapshot
 (
-    id                         SERIAL PRIMARY KEY,
     document_uid               TEXT,
 
     type_depot                 TEXT,

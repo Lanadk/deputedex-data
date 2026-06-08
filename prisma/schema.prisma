@@ -734,7 +734,6 @@ model documents_classifications {
 }
 
 model documents_auteurs {
-  id           Int    @id @default(autoincrement())
   document_uid String
 
   acteur_uid String?
@@ -752,7 +751,6 @@ model documents_auteurs {
 }
 
 model documents_co_signataires {
-  id           Int    @id @default(autoincrement())
   document_uid String
 
   acteur_uid String?
@@ -798,11 +796,11 @@ model documents_imprimeries {
   document documents @relation(fields: [document_uid], references: [uid])
 
   @@unique([row_hash])
+  @@index([document_uid])
   @@map("documents_imprimeries")
 }
 
 model documents_depot_amendements {
-  id           Int    @id @default(autoincrement())
   document_uid String
 
   type_depot String  // 'SEANCE' | 'COMMISSION'
