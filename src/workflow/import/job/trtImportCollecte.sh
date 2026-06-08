@@ -24,6 +24,8 @@ SCRIPTS=(
   "$SCRIPT_DIR/unit-import/scrutins-import.sh"
   "$SCRIPT_DIR/unit-import/mandats-import.sh"
   "$SCRIPT_DIR/unit-import/amendements-import.sh"
+  "$SCRIPT_DIR/unit-import/dossiers-import.sh"
+  "$SCRIPT_DIR/unit-import/documents-import.sh"
   # ajouter ici les futurs imports
 )
 

@@ -77,8 +77,8 @@ model MonitorDataDownload {
 }
 
 model MonitorDataSetsUpdate {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now()) @map("created_at")
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("monitor_data_set_update")
 }
@@ -506,11 +506,10 @@ model amendements {
 
   article99 Boolean?
 
-  row_hash             String   @db.Text
-  legislature_snapshot Int      @db.Integer
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
 
   co_auteurs amendements_co_auteurs[]
-
 }
 
 model amendements_co_auteurs {
@@ -518,9 +517,304 @@ model amendements_co_auteurs {
   acteur_uid     String
 
   row_hash             String @db.Text
-  legislature_snapshot Int      @db.Integer
+  legislature_snapshot Int    @db.Integer
 
   amendement amendements @relation(fields: [amendement_uid], references: [uid])
 
   @@id([amendement_uid, acteur_uid])
+}
+
+
+// ============================================
+// DOSSIER PARLEMENTAIRE
+// ============================================
+model DossierParlementaire {
+  uid String @id
+
+  legislature Int
+  titre String
+  titre_chemin String?
+  senat_chemin String?
+  procedure_code    String?
+  procedure_libelle String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  initiateurs DossierInitiateur[]
+  actes       ActeLegislatif[]
+
+  @@map("dossier_parlementaire")
+}
+
+model DossierInitiateur {
+  dossier_uid String
+
+  acteur_uid String?
+  mandat_uid String?
+  organe_uid String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  dossier DossierParlementaire @relation(fields: [dossier_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([dossier_uid])
+  @@map("dossier_initiateur")
+}
+
+model ActeLegislatif {
+  uid String @id
+
+  dossier_uid String
+  parent_acte_uid String?
+
+  type_acte String
+  code_acte String?
+  nom_canonique String?
+  libelle_court String?
+  organe_uid String?
+  date_acte DateTime?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  rapporteurs ActeRapporteur[]
+  textes_associes ActeTexteAssocie[]
+  reunion ActeReunion?
+  votes ActeVote[]
+  decision ActeDecision?
+
+  parent_acte ActeLegislatif? @relation("ActeHierarchy", fields: [parent_acte_uid], references: [uid])
+  enfants ActeLegislatif[] @relation("ActeHierarchy")
+  dossier DossierParlementaire @relation(fields: [dossier_uid], references: [uid])
+
+  @@index([dossier_uid])
+  @@index([parent_acte_uid])
+  @@map("acte_legislatif")
+}
+
+model ActeRapporteur {
+  acte_uid String
+  acteur_uid String
+
+  type_rapporteur String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@id([acte_uid, acteur_uid])
+  @@map("acte_rapporteur")
+}
+
+model ActeTexteAssocie {
+  acte_uid String
+  reference_texte String
+  type_texte String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@id([acte_uid, reference_texte])
+  @@map("acte_texte_associe")
+}
+
+model ActeReunion {
+  acte_uid String
+  reunion_ref String?
+  odj_ref String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@id([acte_uid])
+  @@map("acte_reunion")
+}
+
+model ActeVote {
+  acte_uid String
+  vote_ref String
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@id([acte_uid, vote_ref])
+  @@map("acte_vote")
+}
+
+model ActeDecision {
+  acte_uid String
+
+  famille_code String?
+  libelle String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
+
+  @@id([acte_uid])
+  @@map("acte_decision")
+}
+
+// ============================================
+// DOCUMENTS PARLEMENTAIRE
+// ============================================
+model documents {
+  uid String @id
+  legislature Int?
+
+  denomination_structurelle String?
+  provenance String?
+  titre_principal String?
+  titre_principal_court String?
+
+  dossier_ref String?
+  redacteur String?
+
+  date_creation DateTime? @db.Date
+  date_depot DateTime? @db.Date
+  date_publication DateTime? @db.Date
+  date_publication_web DateTime? @db.Date
+
+  num_notice String?
+  formule String?
+  adoption_conforme Boolean?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  classification    documents_classifications?
+  auteurs           documents_auteurs[]
+  co_signataires    documents_co_signataires[]
+  organes_referents documents_organes_referents[]
+  imprimerie        documents_imprimeries?
+  depot_amendements documents_depot_amendements[]
+
+  @@unique([row_hash])
+  @@map("documents_parlementaires")
+}
+
+model documents_classifications {
+  document_uid String
+
+  depot_code String?
+  depot_libelle String?
+
+  classe_code String?
+  classe_libelle String?
+
+  type_code String?
+  type_libelle String?
+
+  sous_type_code String?
+  sous_type_libelle String?
+  sous_type_libelle_edition String?
+
+  statut_adoption_code String?
+  statut_adoption_libelle String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@id([document_uid])
+  @@map("documents_classifications")
+}
+
+model documents_auteurs {
+  document_uid String
+
+  acteur_uid String?
+  organe_uid String?
+  qualite    String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([document_uid])
+  @@map("documents_auteurs")
+}
+
+model documents_co_signataires {
+  document_uid String
+
+  acteur_uid String?
+  organe_uid String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([document_uid])
+  @@map("documents_co_signataires")
+}
+
+model documents_organes_referents {
+  document_uid String
+  organe_uid   String
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@id([document_uid, organe_uid])
+  @@map("documents_organes_referents")
+}
+
+model documents_imprimeries {
+  document_uid String @id
+
+  issn String?
+  isbn String?
+  dian String?
+
+  nb_page Int?
+  prix    String?
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([document_uid])
+  @@map("documents_imprimeries")
+}
+
+model documents_depot_amendements {
+  document_uid String
+
+  type_depot String  // 'SEANCE' | 'COMMISSION'
+  organe_uid String?
+  amendable  Boolean?
+
+  date_limite_depot DateTime? @db.Date
+
+  row_hash             String @db.Text
+  legislature_snapshot Int    @db.Integer
+
+  document documents @relation(fields: [document_uid], references: [uid])
+
+  @@unique([row_hash])
+  @@index([document_uid])
+  @@map("documents_depot_amendements")
 }

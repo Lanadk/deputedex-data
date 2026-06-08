@@ -32,7 +32,9 @@ INSERT INTO ref_data_domains (code, description)
 VALUES
     ('acteurs', 'Deputes sénateurs ministres mandats organes'),
     ('scrutins', 'Votes et scrutins publics'),
-    ('amendements', 'Ammendements législatifs')
+    ('amendements', 'Ammendements législatifs'),
+    ('dossiers_legislatifs', 'Dossier législatif'),
+    ('documents_legislatifs', 'Documents législatif')
 ON CONFLICT (code) DO NOTHING;
 
 -- ============================================
@@ -56,9 +58,14 @@ VALUES
     (
         (SELECT id FROM ref_data_domains WHERE code = 'amendements'),
         (SELECT id FROM param_legislatures WHERE number = 16),
-        'https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip'
-,
+        'https://data.assemblee-nationale.fr/static/openData/repository/16/loi/amendements_div_legis/Amendements.json.zip',
         'Amendements.json.zip'
+    ),
+    (
+        (SELECT id FROM ref_data_domains WHERE code = 'dossiers_legislatifs'),
+        (SELECT id FROM param_legislatures WHERE number = 16),
+        'https://data.assemblee-nationale.fr/static/openData/repository/16/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip',
+        'Dossiers_Legislatifs.json.zip'
     )
 ON CONFLICT DO NOTHING;
 
@@ -85,6 +92,12 @@ VALUES
         (SELECT id FROM param_legislatures WHERE number = 17),
         'https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip',
         'Amendements.json.zip'
+    ),
+    (
+        (SELECT id FROM ref_data_domains WHERE code = 'dossiers_legislatifs'),
+        (SELECT id FROM param_legislatures WHERE number = 17),
+        'https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip',
+        'Dossiers_Legislatifs.json.zip'
     )
 ON CONFLICT DO NOTHING;
 

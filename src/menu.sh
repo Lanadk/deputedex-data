@@ -17,6 +17,8 @@ run_parser_all()                { npx ts-node ./workflow/parser/job/trtCheckColl
 run_parser_acteurs()            { npx ts-node ./workflow/parser/job/unit-parser/parseActeurs.ts; }
 run_parser_scrutins()           { npx ts-node ./workflow/parser/job/unit-parser/parseScrutins.ts; }
 run_parser_amendements()        { npx ts-node ./workflow/parser/job/unit-parser/parseAmendements.ts; }
+run_parser_dossiers()        { npx ts-node ./workflow/parser/job/unit-parser/parseDossiers.ts; }
+run_parser_documents()        { npx ts-node ./workflow/parser/job/unit-parser/parseDocuments.ts; }
 
 # -- Import --------------------------------------------------------------------
 run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
@@ -24,7 +26,8 @@ run_import_acteurs()            { ./workflow/import/job/unit-import/acteurs-impo
 run_import_scrutins()           { ./workflow/import/job/unit-import/scrutins-import.sh; }
 run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
 run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
-
+run_import_dossiers()        { ./workflow/import/job/unit-import/dossiers-import.sh; }
+run_import_documents()        { ./workflow/import/job/unit-import/documents-import.sh; }
 
 # -- Aggregation ---------------------------------------------------------------
 run_aggregate_all_one_shot()    { ./workflow/aggregat/job/trtAggregatCollecte-oneshot.sh; }
@@ -108,6 +111,8 @@ parser_menu() {
         echo "3) Parse Scrutins"
         echo "4) Parse Mandats"
         echo "5) Parse Amendements"
+        echo "6) Parse Dossiers"
+        echo "7) Parse Documents"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -119,6 +124,8 @@ parser_menu() {
             3) run_parser_scrutins ;;
             4) run_parser_mandats ;;
             5) run_parser_amendements ;;
+            6) run_parser_dossiers ;;
+            7) run_parser_documents ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac
@@ -136,6 +143,8 @@ import_menu() {
         echo "3) Import Scrutins"
         echo "4) Import Mandats"
         echo "5) Import Amendements"
+        echo "6) Import Dossiers"
+        echo "7) Import Documents"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -147,6 +156,8 @@ import_menu() {
             3) run_import_scrutins ;;
             4) run_import_mandats ;;
             5) run_import_amendements ;;
+            6) run_import_dossiers;;
+            7) run_import_documents;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac

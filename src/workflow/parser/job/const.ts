@@ -7,3 +7,5 @@ export const outTableDirectoryName = 'tables';
 export const scrutinsSourceDirectoryName = 'scrutins';
 export const acteursSourceDirectoryName = 'acteurs/json/acteur';
 export const amendementsSourceDirectoryName = 'amendements';
+export const dossiersSourceDirectoryName = 'dossiers_legislatifs/json/dossierParlementaire';
+export const documentsSourceDirectoryName = 'dossiers_legislatifs/json/document';
