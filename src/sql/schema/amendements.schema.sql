@@ -56,16 +56,16 @@ CREATE TABLE amendements_snapshot
 
     article99            BOOLEAN,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );
 
 CREATE TABLE amendements_co_auteurs_snapshot
 (
     amendement_uid       TEXT,
     acteur_uid           TEXT,
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
 
     PRIMARY KEY (amendement_uid, acteur_uid)
 );

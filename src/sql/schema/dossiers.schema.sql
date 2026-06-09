@@ -75,91 +75,90 @@ CREATE TABLE dossier_parlementaire_snapshot
     procedure_code       TEXT,
     procedure_libelle    TEXT,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );
 
 CREATE TABLE dossier_initiateur_snapshot
 (
-    dossier_uid   TEXT,
-    acteur_uid    TEXT,
-    mandat_uid    TEXT,
-    organe_uid    TEXT,
+    dossier_uid          TEXT,
+    acteur_uid           TEXT,
+    mandat_uid           TEXT,
+    organe_uid           TEXT,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL,
-    UNIQUE (row_hash)
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );
 
 CREATE TABLE acte_legislatif_snapshot
 (
-    uid               TEXT PRIMARY KEY,
-    dossier_uid       TEXT,
-    parent_acte_uid   TEXT,
+    uid                  TEXT PRIMARY KEY,
+    dossier_uid          TEXT,
+    parent_acte_uid      TEXT,
 
-    type_acte         TEXT,
-    code_acte         TEXT,
-    nom_canonique     TEXT,
-    libelle_court     TEXT,
-    organe_uid        TEXT,
-    date_acte         TIMESTAMPTZ,
+    type_acte            TEXT,
+    code_acte            TEXT,
+    nom_canonique        TEXT,
+    libelle_court        TEXT,
+    organe_uid           TEXT,
+    date_acte            TIMESTAMPTZ,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );
 
 CREATE TABLE acte_rapporteur_snapshot
 (
-    acte_uid        TEXT NOT NULL,
-    acteur_uid      TEXT NOT NULL,
-    type_rapporteur TEXT,
+    acte_uid             TEXT        NOT NULL,
+    acteur_uid           TEXT        NOT NULL,
+    type_rapporteur      TEXT,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
 
     PRIMARY KEY (acte_uid, acteur_uid)
 );
 
 CREATE TABLE acte_texte_associe_snapshot
 (
-    acte_uid        TEXT,
-    reference_texte TEXT,
-    type_texte      TEXT,
+    acte_uid             TEXT,
+    reference_texte      TEXT,
+    type_texte           TEXT,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
 
     UNIQUE (acte_uid, reference_texte)
 );
 
 CREATE TABLE acte_reunion_snapshot
 (
-    acte_uid    TEXT PRIMARY KEY,
-    reunion_ref TEXT,
+    acte_uid             TEXT PRIMARY KEY,
+    reunion_ref          TEXT,
 
-    odj_ref     TEXT,
+    odj_ref              TEXT,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );
 
 CREATE TABLE acte_vote_snapshot
 (
-    acte_uid  TEXT,
-    vote_ref  TEXT,
+    acte_uid             TEXT,
+    vote_ref             TEXT,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
 
     PRIMARY KEY (acte_uid, vote_ref)
 );
 
 CREATE TABLE acte_decision_snapshot
 (
-    acte_uid     TEXT PRIMARY KEY,
-    famille_code TEXT,
-    libelle      TEXT,
+    acte_uid             TEXT PRIMARY KEY,
+    famille_code         TEXT,
+    libelle              TEXT,
 
-    row_hash             TEXT,
-    legislature_snapshot INTEGER NOT NULL
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );

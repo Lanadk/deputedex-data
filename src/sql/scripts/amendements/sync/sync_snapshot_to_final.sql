@@ -142,8 +142,6 @@ SELECT
     row_hash,
     legislature_snapshot
 FROM amendements_co_auteurs_snapshot
-ON CONFLICT (amendement_uid, acteur_uid) DO UPDATE
-    SET row_hash = EXCLUDED.row_hash
-WHERE amendements_co_auteurs.row_hash IS DISTINCT FROM EXCLUDED.row_hash;
+ON CONFLICT (row_hash) DO NOTHING;
 
 COMMIT;

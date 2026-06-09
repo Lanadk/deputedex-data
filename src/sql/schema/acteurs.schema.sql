@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS acteurs_snapshot
     profession_categorie  TEXT,
     profession_famille    TEXT,
     uri_hatvp             TEXT,
-    row_hash              TEXT,
+    row_hash              TEXT UNIQUE NOT NULL,
     legislature_snapshot  INTEGER NOT NULL
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS acteurs_adresses_postales_snapshot
     complement_adresse   TEXT,
     code_postal          TEXT,
     ville                TEXT,
-    row_hash             TEXT,
+    row_hash             TEXT UNIQUE NOT NULL,
     legislature_snapshot INTEGER NOT NULL
 );
 
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS acteurs_adresses_mails_snapshot
     type_code            TEXT,
     type_libelle         TEXT,
     email                TEXT,
-    row_hash             TEXT,
+    row_hash             TEXT UNIQUE NOT NULL,
     legislature_snapshot INTEGER NOT NULL
 );
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS acteurs_reseaux_sociaux_snapshot
     type_libelle         TEXT,
     plateforme           TEXT,
     identifiant          TEXT,
-    row_hash             TEXT,
+    row_hash             TEXT UNIQUE NOT NULL,
     legislature_snapshot INTEGER NOT NULL
 );
 
@@ -111,14 +111,14 @@ CREATE TABLE IF NOT EXISTS acteurs_telephones_snapshot
     type_libelle         TEXT,
     adresse_rattachement TEXT,
     numero               TEXT,
-    row_hash             TEXT,
+    row_hash             TEXT UNIQUE NOT NULL,
     legislature_snapshot INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS groupes_parlementaires_snapshot
 (
-    id                   TEXT    NOT NULL,
-    legislature_snapshot INTEGER NOT NULL,
-    row_hash             TEXT    NOT NULL,
+    id                   TEXT        NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
     PRIMARY KEY (id)
 );

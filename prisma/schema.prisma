@@ -114,6 +114,7 @@ model Acteurs {
   photos           RefActeursPhotos[]
   groupes          ActeursGroupes[]
 
+  @@unique([row_hash])
   @@map("acteurs")
 }
 
@@ -135,6 +136,7 @@ model ActeursAdressesPostales {
 
   acteur Acteurs @relation(fields: [acteur_uid], references: [uid], onDelete: Cascade)
 
+  @@unique([row_hash])
   @@unique([uid_adresse])
   @@map("acteurs_adresses_postales")
 }
@@ -152,6 +154,7 @@ model ActeursAdressesMails {
 
   acteur Acteurs @relation(fields: [acteur_uid], references: [uid], onDelete: Cascade)
 
+  @@unique([row_hash])
   @@unique([uid_adresse])
   @@map("acteurs_adresses_mails")
 }
@@ -170,6 +173,7 @@ model ActeursReseauxSociaux {
 
   acteur Acteurs @relation(fields: [acteur_uid], references: [uid], onDelete: Cascade)
 
+  @@unique([row_hash])
   @@unique([uid_adresse])
   @@map("acteurs_reseaux_sociaux")
 }
@@ -188,6 +192,7 @@ model ActeursTelephones {
 
   acteur Acteurs @relation(fields: [acteur_uid], references: [uid], onDelete: Cascade)
 
+  @@unique([row_hash])
   @@unique([uid_adresse])
   @@map("acteurs_telephones")
 }
@@ -206,6 +211,7 @@ model ActeursGroupes {
   acteur Acteurs               @relation(fields: [acteur_uid], references: [uid], onDelete: Cascade)
   groupe GroupesParlementaires @relation(fields: [groupe_id], references: [id])
 
+  @@unique([row_hash])
   @@unique([acteur_uid, groupe_id, date_debut])
   @@index([acteur_uid])
   @@index([groupe_id])
@@ -225,6 +231,7 @@ model Deputes {
 
   votes VotesDeputes[]
 
+  @@unique([row_hash])
   @@unique([id])
   @@map("deputes")
 }
@@ -249,6 +256,7 @@ model Scrutins {
   agregats                ScrutinsAgregats?
   scrutinsGroupesAgregats ScrutinsGroupesAgregats[]
 
+  @@unique([row_hash])
   @@unique([uid]) // Un scrutin est unique
   @@index([legislature_snapshot])
   @@map("scrutins")
@@ -268,6 +276,7 @@ model ScrutinsGroupes {
   scrutin Scrutins              @relation(fields: [scrutin_uid], references: [uid], onDelete: Cascade)
   groupe  GroupesParlementaires @relation(fields: [groupe_id], references: [id])
 
+  @@unique([row_hash])
   @@unique([scrutin_uid, groupe_id]) // Un groupe ne peut apparaître qu'une fois par scrutin
   @@index([scrutin_uid])
   @@index([legislature_snapshot])
@@ -292,6 +301,7 @@ model VotesDeputes {
   depute  Deputes                @relation(fields: [depute_id], references: [id])
   groupe  GroupesParlementaires? @relation(fields: [groupe_id], references: [id])
 
+  @@unique([row_hash])
   @@unique([scrutin_uid, depute_id]) // Un député ne peut voter qu'une fois par scrutin
   @@index([scrutin_uid])
   @@index([depute_id])
@@ -316,6 +326,7 @@ model ScrutinsAgregats {
 
   scrutin Scrutins @relation(fields: [scrutin_uid], references: [uid], onDelete: Cascade)
 
+  @@unique([row_hash])
   @@unique([scrutin_uid]) // Un scrutin ne peut avoir qu'un agrégat
   @@index([legislature_snapshot])
   @@map("scrutins_agregats")
@@ -338,6 +349,7 @@ model ScrutinsGroupesAgregats {
   scrutin Scrutins              @relation(fields: [scrutin_uid], references: [uid], onDelete: Cascade)
   groupe  GroupesParlementaires @relation(fields: [groupe_id], references: [id])
 
+  @@unique([row_hash])
   @@unique([scrutin_uid, groupe_id]) // Un groupe ne peut avoir qu'un agrégat par scrutin
   @@index([scrutin_uid])
   @@index([legislature_snapshot])
@@ -380,6 +392,7 @@ model Mandats {
   acteur     Acteurs             @relation(fields: [acteur_uid], references: [uid], onDelete: Cascade)
   suppleants MandatsSuppleants[]
 
+  @@unique([row_hash])
   @@index([acteur_uid])
   @@index([legislature_snapshot])
   @@map("mandats")
@@ -398,6 +411,7 @@ model MandatsSuppleants {
   mandat Mandats @relation(fields: [mandat_uid], references: [uid], onDelete: Cascade)
 
   @@unique([mandat_uid, suppleant_uid])
+  @@unique([row_hash])
   @@index([legislature_snapshot])
   @@map("mandats_suppleants")
 }
@@ -418,6 +432,7 @@ model GroupesParlementaires {
   votesDeputes            VotesDeputes[]
   scrutinsGroupesAgregats ScrutinsGroupesAgregats[]
 
+  @@unique([row_hash])
   @@map("groupes_parlementaires")
 }
 
@@ -513,6 +528,7 @@ model amendements {
 }
 
 model amendements_co_auteurs {
+  id             Int    @id @default(autoincrement())
   amendement_uid String
   acteur_uid     String
 
@@ -521,9 +537,9 @@ model amendements_co_auteurs {
 
   amendement amendements @relation(fields: [amendement_uid], references: [uid])
 
-  @@id([amendement_uid, acteur_uid])
+  @@unique([row_hash])
+  @@map("amendements_co_auteurs")
 }
-
 
 // ============================================
 // DOSSIER PARLEMENTAIRE
@@ -531,10 +547,10 @@ model amendements_co_auteurs {
 model DossierParlementaire {
   uid String @id
 
-  legislature Int
-  titre String
-  titre_chemin String?
-  senat_chemin String?
+  legislature       Int
+  titre             String
+  titre_chemin      String?
+  senat_chemin      String?
   procedure_code    String?
   procedure_libelle String?
 
@@ -544,10 +560,12 @@ model DossierParlementaire {
   initiateurs DossierInitiateur[]
   actes       ActeLegislatif[]
 
+  @@unique([row_hash])
   @@map("dossier_parlementaire")
 }
 
 model DossierInitiateur {
+  id          Int    @id @default(autoincrement())
   dossier_uid String
 
   acteur_uid String?
@@ -567,36 +585,37 @@ model DossierInitiateur {
 model ActeLegislatif {
   uid String @id
 
-  dossier_uid String
+  dossier_uid     String
   parent_acte_uid String?
 
-  type_acte String
-  code_acte String?
+  type_acte     String
+  code_acte     String?
   nom_canonique String?
   libelle_court String?
-  organe_uid String?
-  date_acte DateTime?
+  organe_uid    String?
+  date_acte     DateTime?
 
   row_hash             String @db.Text
   legislature_snapshot Int    @db.Integer
 
-  rapporteurs ActeRapporteur[]
+  rapporteurs     ActeRapporteur[]
   textes_associes ActeTexteAssocie[]
-  reunion ActeReunion?
-  votes ActeVote[]
-  decision ActeDecision?
+  reunion         ActeReunion?
+  votes           ActeVote[]
+  decision        ActeDecision?
 
-  parent_acte ActeLegislatif? @relation("ActeHierarchy", fields: [parent_acte_uid], references: [uid])
-  enfants ActeLegislatif[] @relation("ActeHierarchy")
-  dossier DossierParlementaire @relation(fields: [dossier_uid], references: [uid])
+  parent_acte ActeLegislatif?      @relation("ActeHierarchy", fields: [parent_acte_uid], references: [uid])
+  enfants     ActeLegislatif[]     @relation("ActeHierarchy")
+  dossier     DossierParlementaire @relation(fields: [dossier_uid], references: [uid])
 
+  @@unique([row_hash])
   @@index([dossier_uid])
   @@index([parent_acte_uid])
   @@map("acte_legislatif")
 }
 
 model ActeRapporteur {
-  acte_uid String
+  acte_uid   String
   acteur_uid String
 
   type_rapporteur String?
@@ -607,13 +626,14 @@ model ActeRapporteur {
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
   @@id([acte_uid, acteur_uid])
+  @@unique([row_hash])
   @@map("acte_rapporteur")
 }
 
 model ActeTexteAssocie {
-  acte_uid String
+  acte_uid        String
   reference_texte String
-  type_texte String?
+  type_texte      String?
 
   row_hash             String @db.Text
   legislature_snapshot Int    @db.Integer
@@ -621,13 +641,14 @@ model ActeTexteAssocie {
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
   @@id([acte_uid, reference_texte])
+  @@unique([row_hash])
   @@map("acte_texte_associe")
 }
 
 model ActeReunion {
-  acte_uid String
+  acte_uid    String
   reunion_ref String?
-  odj_ref String?
+  odj_ref     String?
 
   row_hash             String @db.Text
   legislature_snapshot Int    @db.Integer
@@ -635,6 +656,7 @@ model ActeReunion {
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
   @@id([acte_uid])
+  @@unique([row_hash])
   @@map("acte_reunion")
 }
 
@@ -648,6 +670,7 @@ model ActeVote {
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
   @@id([acte_uid, vote_ref])
+  @@unique([row_hash])
   @@map("acte_vote")
 }
 
@@ -655,7 +678,7 @@ model ActeDecision {
   acte_uid String
 
   famille_code String?
-  libelle String?
+  libelle      String?
 
   row_hash             String @db.Text
   legislature_snapshot Int    @db.Integer
@@ -663,6 +686,7 @@ model ActeDecision {
   acte ActeLegislatif @relation(fields: [acte_uid], references: [uid])
 
   @@id([acte_uid])
+  @@unique([row_hash])
   @@map("acte_decision")
 }
 
@@ -670,24 +694,24 @@ model ActeDecision {
 // DOCUMENTS PARLEMENTAIRE
 // ============================================
 model documents {
-  uid String @id
+  uid         String @id
   legislature Int?
 
   denomination_structurelle String?
-  provenance String?
-  titre_principal String?
-  titre_principal_court String?
+  provenance                String?
+  titre_principal           String?
+  titre_principal_court     String?
 
   dossier_ref String?
-  redacteur String?
+  redacteur   String?
 
-  date_creation DateTime? @db.Date
-  date_depot DateTime? @db.Date
-  date_publication DateTime? @db.Date
+  date_creation        DateTime? @db.Date
+  date_depot           DateTime? @db.Date
+  date_publication     DateTime? @db.Date
   date_publication_web DateTime? @db.Date
 
-  num_notice String?
-  formule String?
+  num_notice        String?
+  formule           String?
   adoption_conforme Boolean?
 
   row_hash             String @db.Text
@@ -701,26 +725,27 @@ model documents {
   depot_amendements documents_depot_amendements[]
 
   @@unique([row_hash])
+  @@index([uid])
   @@map("documents_parlementaires")
 }
 
 model documents_classifications {
   document_uid String
 
-  depot_code String?
+  depot_code    String?
   depot_libelle String?
 
-  classe_code String?
+  classe_code    String?
   classe_libelle String?
 
-  type_code String?
+  type_code    String?
   type_libelle String?
 
-  sous_type_code String?
-  sous_type_libelle String?
+  sous_type_code            String?
+  sous_type_libelle         String?
   sous_type_libelle_edition String?
 
-  statut_adoption_code String?
+  statut_adoption_code    String?
   statut_adoption_libelle String?
 
   row_hash             String @db.Text
@@ -728,12 +753,14 @@ model documents_classifications {
 
   document documents @relation(fields: [document_uid], references: [uid])
 
-  @@unique([row_hash])
   @@id([document_uid])
+  @@unique([row_hash])
+  @@index([document_uid])
   @@map("documents_classifications")
 }
 
 model documents_auteurs {
+  id           Int    @id @default(autoincrement())
   document_uid String
 
   acteur_uid String?
@@ -751,6 +778,7 @@ model documents_auteurs {
 }
 
 model documents_co_signataires {
+  id           Int    @id @default(autoincrement())
   document_uid String
 
   acteur_uid String?
@@ -767,6 +795,7 @@ model documents_co_signataires {
 }
 
 model documents_organes_referents {
+  id           Int    @id @default(autoincrement())
   document_uid String
   organe_uid   String
 
@@ -776,7 +805,6 @@ model documents_organes_referents {
   document documents @relation(fields: [document_uid], references: [uid])
 
   @@unique([row_hash])
-  @@id([document_uid, organe_uid])
   @@map("documents_organes_referents")
 }
 
@@ -801,9 +829,10 @@ model documents_imprimeries {
 }
 
 model documents_depot_amendements {
+  id           Int    @id @default(autoincrement())
   document_uid String
 
-  type_depot String  // 'SEANCE' | 'COMMISSION'
+  type_depot String // 'SEANCE' | 'COMMISSION'
   organe_uid String?
   amendable  Boolean?
 
