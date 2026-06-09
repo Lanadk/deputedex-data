@@ -52,8 +52,8 @@ DROP TABLE IF EXISTS groupes_parlementaires_snapshot CASCADE;
 CREATE TABLE IF NOT EXISTS deputes_snapshot
 (
     id                   TEXT PRIMARY KEY,
-    row_hash             TEXT    NOT NULL,
-    legislature_snapshot INTEGER NOT NULL
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS scrutins_snapshot
@@ -68,34 +68,34 @@ CREATE TABLE IF NOT EXISTS scrutins_snapshot
     type_majorite        TEXT,
     resultat_code        TEXT,
     resultat_libelle     TEXT,
-    row_hash             TEXT    NOT NULL,
-    legislature_snapshot INTEGER NOT NULL
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS scrutins_groupes_snapshot
 (
-    scrutin_uid          TEXT    NOT NULL,
-    groupe_id            TEXT    NOT NULL,
-    groupe_legislature   INTEGER NOT NULL,
+    scrutin_uid          TEXT        NOT NULL,
+    groupe_id            TEXT        NOT NULL,
+    groupe_legislature   INTEGER     NOT NULL,
     nombre_membres       INTEGER,
     position_majoritaire TEXT,
-    row_hash             TEXT    NOT NULL,
-    legislature_snapshot INTEGER NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
     PRIMARY KEY (scrutin_uid, groupe_id)
 );
 
 CREATE TABLE IF NOT EXISTS votes_deputes_snapshot
 (
-    scrutin_uid          TEXT    NOT NULL,
-    depute_id            TEXT    NOT NULL,
+    scrutin_uid          TEXT        NOT NULL,
+    depute_id            TEXT        NOT NULL,
     groupe_id            TEXT,
     groupe_legislature   INTEGER,
     mandat_ref           TEXT,
-    position             TEXT    NOT NULL,
+    position             TEXT        NOT NULL,
     cause_position       TEXT,
     par_delegation       BOOLEAN,
-    row_hash             TEXT    NOT NULL,
-    legislature_snapshot INTEGER NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
     PRIMARY KEY (scrutin_uid, depute_id)
 );
 
@@ -110,29 +110,29 @@ CREATE TABLE IF NOT EXISTS scrutins_agregats_snapshot
     total_abstentions             INTEGER,
     total_non_votants             INTEGER,
     total_non_votants_volontaires INTEGER,
-    row_hash                      TEXT    NOT NULL,
-    legislature_snapshot          INTEGER NOT NULL
+    row_hash                      TEXT UNIQUE NOT NULL,
+    legislature_snapshot          INTEGER     NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS scrutins_groupes_agregats_snapshot
 (
-    scrutin_uid             TEXT    NOT NULL,
-    groupe_id               TEXT    NOT NULL,
-    groupe_legislature      INTEGER NOT NULL,
+    scrutin_uid             TEXT        NOT NULL,
+    groupe_id               TEXT        NOT NULL,
+    groupe_legislature      INTEGER     NOT NULL,
     pour                    INTEGER,
     contre                  INTEGER,
     abstentions             INTEGER,
     non_votants             INTEGER,
     non_votants_volontaires INTEGER,
-    row_hash                TEXT    NOT NULL,
-    legislature_snapshot    INTEGER NOT NULL,
+    row_hash                TEXT UNIQUE NOT NULL,
+    legislature_snapshot    INTEGER     NOT NULL,
     PRIMARY KEY (scrutin_uid, groupe_id)
 );
 
 CREATE TABLE IF NOT EXISTS groupes_parlementaires_snapshot
 (
-    id                   TEXT    NOT NULL,
-    legislature_snapshot INTEGER NOT NULL,
-    row_hash             TEXT    NOT NULL,
+    id                   TEXT        NOT NULL,
+    legislature_snapshot INTEGER     NOT NULL,
+    row_hash             TEXT UNIQUE NOT NULL,
     PRIMARY KEY (id)
 );

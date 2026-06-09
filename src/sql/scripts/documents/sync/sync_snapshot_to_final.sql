@@ -208,10 +208,7 @@ SELECT document_uid,
        row_hash,
        legislature_snapshot
 FROM documents_organes_referents_snapshot
-ON CONFLICT (document_uid, organe_uid) DO UPDATE
-    SET row_hash             = EXCLUDED.row_hash,
-        legislature_snapshot = EXCLUDED.legislature_snapshot
-WHERE documents_organes_referents.row_hash IS DISTINCT FROM EXCLUDED.row_hash;
+ON CONFLICT (row_hash) DO NOTHING;
 
 -- DELETE MISSING ORGANES REFERENTS
 DELETE
