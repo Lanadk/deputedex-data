@@ -9,6 +9,7 @@ import {
     baseOutData,
     outTableDirectoryName,
     scrutinsSourceDirectoryName,
+    mandatsSourceDirectoryName,
     amendementsSourceDirectoryName, dossiersSourceDirectoryName, documentsSourceDirectoryName
 } from "../const";
 import {ParserJob} from "../parser/ParserJob";
@@ -20,8 +21,9 @@ import {BatchProcessor} from "../../domain/models/BatchProcessor";
 import {ParseFilesUseCase} from "../../domain/usecases/ParseFilesUseCase";
 import {DossiersParlementairesExtractor} from "../../domain/models/DossierParlementaireExtractor";
 import {DocumentParlementaireExtractor} from "../../domain/models/DocumentParlementaireExtractor";
+import {MandatsExtractor} from "../../domain/models/MandatExtractor";
 
-export type ParserDomain = 'acteurs' | 'scrutins' | 'amendements' | 'dossiers_legislatifs' | 'documents_parlementaires';
+export type ParserDomain = 'acteurs' | 'scrutins' | 'amendements' | 'mandats' | 'dossiers_legislatifs' | 'documents_parlementaires';
 
 export interface ParserJobRunnerConfig {
     domain: ParserDomain;
@@ -35,6 +37,7 @@ export class ParserJobFactory {
         acteurs: acteursSourceDirectoryName,
         scrutins: scrutinsSourceDirectoryName,
         amendements: amendementsSourceDirectoryName,
+        mandats: mandatsSourceDirectoryName,
         dossiers_legislatifs: dossiersSourceDirectoryName,
         documents_parlementaires: documentsSourceDirectoryName,
     };
@@ -47,6 +50,7 @@ export class ParserJobFactory {
             case 'acteurs':  return new ActeursExtractor(legislatureSnapshot);
             case 'scrutins': return new ScrutinsExtractor(legislatureSnapshot);
             case "amendements": return new AmendementExtractor(legislatureSnapshot);
+            case "mandats": return new MandatsExtractor(legislatureSnapshot);
             case "dossiers_legislatifs": return new DossiersParlementairesExtractor(legislatureSnapshot);
             case "documents_parlementaires": return new DocumentParlementaireExtractor(legislatureSnapshot);
         }}
@@ -89,7 +93,7 @@ export class ParserJobFactory {
 
         logger.info(`🏛️  Législatures trouvées : ${legislatures.join(', ')}`);
 
-        const domains: ParserDomain[] = ['acteurs', 'scrutins', 'amendements', "dossiers_legislatifs", "documents_parlementaires"];
+        const domains: ParserDomain[] = ['acteurs', 'scrutins', 'amendements', 'mandats', "dossiers_legislatifs", "documents_parlementaires"];
 
         for (const legislature of legislatures) {
             logger.info(`\n📅 Legislature ${legislature}`);
