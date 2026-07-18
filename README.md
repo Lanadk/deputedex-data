@@ -204,7 +204,7 @@ npm run prisma:generate
 1. **Copier le schema.prisma vers le frontend**
 ```bash
 # Depuis le repo ETL
-prisma/schema.prisma ../deputydex/prisma/schema.prisma
+prisma/schema.prisma ../deputydex/app/infrastructure/db/prisma/schema.prisma
 ```
 
 2. **Dans le repo frontend, regénérer le client**
