@@ -18,6 +18,13 @@ FROM deputes d
 WHERE d.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
   AND NOT EXISTS (SELECT 1 FROM deputes_snapshot s WHERE s.id = d.id);
 
+-- votes_deputes_depute_id_fkey est ON DELETE RESTRICT et votes_deputes n'est
+-- purgé que plus bas dans ce fichier (section VOTES DEPUTES) : il faut retirer
+-- les votes d'un député disparu ici, sinon la suppression ci-dessous échoue.
+DELETE
+FROM votes_deputes
+WHERE depute_id IN (SELECT id FROM tmp_deputes_to_delete);
+
 DELETE
 FROM deputes d USING tmp_deputes_to_delete x
 WHERE d.id = x.id;
