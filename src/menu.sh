@@ -23,7 +23,7 @@ run_parser_documents()        { npx ts-node ./workflow/parser/job/unit-parser/pa
 # -- Import --------------------------------------------------------------------
 run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
 run_import_acteurs()            { npx ts-node ./workflow/import/job/unit-import/importActeurs.ts; }
-run_import_scrutins()           { ./workflow/import/job/unit-import/scrutins-import.sh; }
+run_import_scrutins()           { npx ts-node ./workflow/import/job/unit-import/importScrutins.ts; }
 run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
 run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
 run_import_dossiers()        { ./workflow/import/job/unit-import/dossiers-import.sh; }
