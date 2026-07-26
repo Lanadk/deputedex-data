@@ -20,8 +20,6 @@ fi
 # Scripts d'import existants
 # ----------------------------------------------------------------------
 SCRIPTS=(
-  "$SCRIPT_DIR/unit-import/mandats-import.sh"
-  "$SCRIPT_DIR/unit-import/amendements-import.sh"
   "$SCRIPT_DIR/unit-import/dossiers-import.sh"
   "$SCRIPT_DIR/unit-import/documents-import.sh"
   # ajouter ici les futurs imports
@@ -45,6 +43,18 @@ echo "=============================================="
 echo "Running scrutins import (TS)"
 echo "=============================================="
 npx ts-node "$SCRIPT_DIR/unit-import/importScrutins.ts" $AUTO_CLEANUP
+
+echo ""
+echo "=============================================="
+echo "Running mandats import (TS)"
+echo "=============================================="
+npx ts-node "$SCRIPT_DIR/unit-import/importMandats.ts" $AUTO_CLEANUP
+
+echo ""
+echo "=============================================="
+echo "Running amendements import (TS)"
+echo "=============================================="
+npx ts-node "$SCRIPT_DIR/unit-import/importAmendements.ts" $AUTO_CLEANUP
 
 for script in "${SCRIPTS[@]}"; do
     if [[ -f "$script" ]]; then

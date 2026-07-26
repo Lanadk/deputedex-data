@@ -24,8 +24,8 @@ run_parser_documents()        { npx ts-node ./workflow/parser/job/unit-parser/pa
 run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
 run_import_acteurs()            { npx ts-node ./workflow/import/job/unit-import/importActeurs.ts; }
 run_import_scrutins()           { npx ts-node ./workflow/import/job/unit-import/importScrutins.ts; }
-run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
-run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
+run_import_mandats()            { npx ts-node ./workflow/import/job/unit-import/importMandats.ts; }
+run_import_amendements()        { npx ts-node ./workflow/import/job/unit-import/importAmendements.ts; }
 run_import_dossiers()        { ./workflow/import/job/unit-import/dossiers-import.sh; }
 run_import_documents()        { ./workflow/import/job/unit-import/documents-import.sh; }
 
@@ -109,10 +109,9 @@ parser_menu() {
         echo "1) Parse All"
         echo "2) Parse Acteurs"
         echo "3) Parse Scrutins"
-        echo "4) Parse Mandats"
-        echo "5) Parse Amendements"
-        echo "6) Parse Dossiers"
-        echo "7) Parse Documents"
+        echo "4) Parse Amendements"
+        echo "5) Parse Dossiers"
+        echo "6) Parse Documents"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -122,10 +121,9 @@ parser_menu() {
             1) run_parser_all ;;
             2) run_parser_acteurs ;;
             3) run_parser_scrutins ;;
-            4) run_parser_mandats ;;
-            5) run_parser_amendements ;;
-            6) run_parser_dossiers ;;
-            7) run_parser_documents ;;
+            4) run_parser_amendements ;;
+            5) run_parser_dossiers ;;
+            6) run_parser_documents ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac
