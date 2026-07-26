@@ -26,8 +26,8 @@ run_import_acteurs()            { npx ts-node ./workflow/import/job/unit-import/
 run_import_scrutins()           { npx ts-node ./workflow/import/job/unit-import/importScrutins.ts; }
 run_import_mandats()            { npx ts-node ./workflow/import/job/unit-import/importMandats.ts; }
 run_import_amendements()        { npx ts-node ./workflow/import/job/unit-import/importAmendements.ts; }
-run_import_dossiers()        { ./workflow/import/job/unit-import/dossiers-import.sh; }
-run_import_documents()        { ./workflow/import/job/unit-import/documents-import.sh; }
+run_import_dossiers()           { npx ts-node ./workflow/import/job/unit-import/importDossiers.ts; }
+run_import_documents()          { npx ts-node ./workflow/import/job/unit-import/importDocuments.ts; }
 
 # -- Aggregation ---------------------------------------------------------------
 run_aggregate_all_one_shot()    { ./workflow/aggregat/job/trtAggregatCollecte-oneshot.sh; }
