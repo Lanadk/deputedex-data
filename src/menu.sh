@@ -22,7 +22,7 @@ run_parser_documents()        { npx ts-node ./workflow/parser/job/unit-parser/pa
 
 # -- Import --------------------------------------------------------------------
 run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
-run_import_acteurs()            { ./workflow/import/job/unit-import/acteurs-import.sh; }
+run_import_acteurs()            { npx ts-node ./workflow/import/job/unit-import/importActeurs.ts; }
 run_import_scrutins()           { ./workflow/import/job/unit-import/scrutins-import.sh; }
 run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
 run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
@@ -32,16 +32,16 @@ run_import_documents()        { ./workflow/import/job/unit-import/documents-impo
 # -- Aggregation ---------------------------------------------------------------
 run_aggregate_all_one_shot()    { ./workflow/aggregat/job/trtAggregatCollecte-oneshot.sh; }
 run_aggregate_all_refresh()     { ./workflow/aggregat/job/trtAggregatCollecte.sh; }
-run_aggregate_acteurs_one_shot(){ ./workflow/aggregat/job/acteurs/aggregation-oneshot.sh; }
-run_aggregate_acteurs_refresh() { ./workflow/aggregat/job/acteurs/aggregation.sh; }
+run_aggregate_acteurs_one_shot(){ npx ts-node ./workflow/aggregat/job/acteurs/aggregation-oneshot.ts; }
+run_aggregate_acteurs_refresh() { npx ts-node ./workflow/aggregat/job/acteurs/aggregation.ts; }
 run_aggregate_groupes_one_shot(){ ./workflow/aggregat/job/groupes/aggregation-oneshot.sh; }
 run_aggregate_groupes_refresh() { ./workflow/aggregat/job/groupes/aggregation.sh; }
 
 # -- Referentiels  ---------------------------------------------------------------
-run_update_all_referentials_tables() { ./workflow/referentials/job/trtUpdateReferentials.sh; }
+run_update_all_referentials_tables() { npx ts-node ./workflow/referentials/job/trtUpdateReferentials.ts; }
 
 # -- Enrichment  ---------------------------------------------------------------
-run_all_enrichment_tables() { ./workflow/enrichment/job/trtEnrichmentCollecte.sh; }
+run_all_enrichment_tables() { npx ts-node ./workflow/enrichment/job/trtEnrichmentCollecte.ts; }
 
 # -- Dataset update monitoring  ---------------------------------------------------------------
 run_monitor_dataset_update() { npx ts-node ./workflow/_common/job/logDatasetUpdate.ts; }

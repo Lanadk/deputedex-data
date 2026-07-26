@@ -10,7 +10,6 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 SCRIPTS=(
-  "$SCRIPT_DIR/acteurs/aggregation.sh"
   "$SCRIPT_DIR/groups/aggregation.sh"
   "$SCRIPT_DIR/calendar/aggregation.sh"
   "$SCRIPT_DIR/deputes/aggregation.sh"
@@ -20,6 +19,12 @@ SCRIPTS=(
 echo "=============================================="
 echo "🚀 Starting ALL aggregations"
 echo "=============================================="
+
+echo ""
+echo "=============================================="
+echo "Running acteurs aggregation (TS)"
+echo "=============================================="
+npx ts-node "$SCRIPT_DIR/acteurs/aggregation.ts"
 
 for script in "${SCRIPTS[@]}"; do
     if [[ -f "$script" ]]; then

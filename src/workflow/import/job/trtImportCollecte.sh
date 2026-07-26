@@ -20,7 +20,6 @@ fi
 # Scripts d'import existants
 # ----------------------------------------------------------------------
 SCRIPTS=(
-  "$SCRIPT_DIR/unit-import/acteurs-import.sh"
   "$SCRIPT_DIR/unit-import/scrutins-import.sh"
   "$SCRIPT_DIR/unit-import/mandats-import.sh"
   "$SCRIPT_DIR/unit-import/amendements-import.sh"
@@ -35,6 +34,12 @@ SCRIPTS=(
 echo "=============================================="
 echo "🚀 Starting ALL imports"
 echo "=============================================="
+
+echo ""
+echo "=============================================="
+echo "Running acteurs import (TS)"
+echo "=============================================="
+npx ts-node "$SCRIPT_DIR/unit-import/importActeurs.ts" $AUTO_CLEANUP
 
 for script in "${SCRIPTS[@]}"; do
     if [[ -f "$script" ]]; then

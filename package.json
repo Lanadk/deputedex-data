@@ -5,12 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "first-setup": "npm run docker-image:build && npm run docker:db && npm run prisma:migrate-dev && npm run prisma:generate  && npm run prisma:seed",
-
     "docker:db": "ts-node local/local-db-init.ts",
     "docker-image:build": "docker build -t deputydex-db-image .",
-
     "drop-views": "ts-node prisma/drop-views.ts",
-
     "prisma:generate": "prisma generate",
     "prisma:migrate-dev": "dotenv -e .env.local -- npx prisma migrate dev",
     "prisma:migrate-prod": "prisma migrate deploy",
@@ -24,12 +21,14 @@
     "adm-zip": "^0.5.16",
     "dotenv": "^17.2.3",
     "pg": "^8.18.0",
+    "pg-copy-streams": "^7.0.0",
     "unzipper": "^0.12.3"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.7",
     "@types/node": "^25.2.0",
     "@types/pg": "^8.16.0",
+    "@types/pg-copy-streams": "^1.2.5",
     "dotenv-cli": "^11.0.0",
     "prisma": "^7.3.0",
     "typescript": "^5.5.3"
