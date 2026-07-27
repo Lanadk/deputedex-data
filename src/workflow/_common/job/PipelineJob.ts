@@ -18,8 +18,7 @@ export type Step =
 
 /**
  * Job générique piloté par une liste de steps déclaratifs, sur le même moule
- * que DownloadJob/ParserJob. Remplace le pattern bash "fonctions wrapper +
- * boucle" (run_sql_file/create_view/refresh_view) par une liste de données.
+ * que DownloadJob/ParserJob.
  */
 export class PipelineJob {
     constructor(

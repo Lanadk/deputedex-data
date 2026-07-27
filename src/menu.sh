@@ -21,7 +21,7 @@ run_parser_dossiers()        { npx ts-node ./workflow/parser/job/unit-parser/par
 run_parser_documents()        { npx ts-node ./workflow/parser/job/unit-parser/parseDocuments.ts; }
 
 # -- Import --------------------------------------------------------------------
-run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
+run_import_all()                { npx ts-node ./workflow/import/job/trtImportCollecte.ts "$1"; }
 run_import_acteurs()            { npx ts-node ./workflow/import/job/unit-import/importActeurs.ts; }
 run_import_scrutins()           { npx ts-node ./workflow/import/job/unit-import/importScrutins.ts; }
 run_import_mandats()            { npx ts-node ./workflow/import/job/unit-import/importMandats.ts; }
@@ -30,12 +30,16 @@ run_import_dossiers()           { npx ts-node ./workflow/import/job/unit-import/
 run_import_documents()          { npx ts-node ./workflow/import/job/unit-import/importDocuments.ts; }
 
 # -- Aggregation ---------------------------------------------------------------
-run_aggregate_all_one_shot()    { ./workflow/aggregat/job/trtAggregatCollecte-oneshot.sh; }
-run_aggregate_all_refresh()     { ./workflow/aggregat/job/trtAggregatCollecte.sh; }
+run_aggregate_all_one_shot()    { npx ts-node ./workflow/aggregat/job/trtAggregatCollecte-oneshot.ts; }
+run_aggregate_all_refresh()     { npx ts-node ./workflow/aggregat/job/trtAggregatCollecte.ts; }
 run_aggregate_acteurs_one_shot(){ npx ts-node ./workflow/aggregat/job/acteurs/aggregation-oneshot.ts; }
 run_aggregate_acteurs_refresh() { npx ts-node ./workflow/aggregat/job/acteurs/aggregation.ts; }
-run_aggregate_groupes_one_shot(){ ./workflow/aggregat/job/groupes/aggregation-oneshot.sh; }
-run_aggregate_groupes_refresh() { ./workflow/aggregat/job/groupes/aggregation.sh; }
+run_aggregate_groupes_one_shot(){ npx ts-node ./workflow/aggregat/job/groups/aggregation-oneshot.ts; }
+run_aggregate_groupes_refresh() { npx ts-node ./workflow/aggregat/job/groups/aggregation.ts; }
+run_aggregate_calendar_one_shot(){ npx ts-node ./workflow/aggregat/job/calendar/aggregation-oneshot.ts; }
+run_aggregate_calendar_refresh() { npx ts-node ./workflow/aggregat/job/calendar/aggregation.ts; }
+run_aggregate_deputes_one_shot(){ npx ts-node ./workflow/aggregat/job/deputes/aggregation-oneshot.ts; }
+run_aggregate_deputes_refresh() { npx ts-node ./workflow/aggregat/job/deputes/aggregation.ts; }
 
 # -- Referentiels  ---------------------------------------------------------------
 run_update_all_referentials_tables() { npx ts-node ./workflow/referentials/job/trtUpdateReferentials.ts; }
@@ -174,6 +178,10 @@ aggregate_menu() {
         echo "4) Aggregate Acteurs (Create - One shot)"
         echo "5) Aggregate Groupes (Refresh)"
         echo "6) Aggregate Groupes (Create - One shot)"
+        echo "7) Aggregate Calendar (Refresh)"
+        echo "8) Aggregate Calendar (Create - One shot)"
+        echo "9) Aggregate Deputes (Refresh)"
+        echo "10) Aggregate Deputes (Create - One shot)"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -197,6 +205,18 @@ aggregate_menu() {
                 read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
                 echo
                 if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_groupes_one_shot; fi
+                ;;
+            7) run_aggregate_calendar_refresh ;;
+            8)
+                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
+                echo
+                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_calendar_one_shot; fi
+                ;;
+            9) run_aggregate_deputes_refresh ;;
+            10)
+                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
+                echo
+                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_deputes_one_shot; fi
                 ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
