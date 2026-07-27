@@ -47,11 +47,23 @@ async function main() {
 
         const job = new DownloadJob(downloadUseCase, logger);
 
-        await job.run({
+        const results = await job.run({
             force: false,
             maxRetries: 3,
             filters: undefined
         });
+
+        const failed = results.filter(r => !r.success);
+        if (failed.length > 0) {
+            // Non-bloquant volontairement : un échec sur une source ne doit pas
+            // empêcher le parsing/import des sources qui ont réussi. Un échec de
+            // téléchargement ne laisse plus de zip/dossier extrait corrompu derrière
+            // lui (cf. FileDownloader) - le pire cas est que ce domaine/législature
+            // reparse les données de la dernière collecte réussie, pas des données
+            // tronquées. Le suivi se fait via les logs ci-dessous et la table
+            // monitor_data_download (downloaded=false, error_message).
+            logger.error(`❌ ${failed.length}/${results.length} download(s) failed after retries: ${failed.map(f => f.item.fileName).join(', ')}`);
+        }
 
     } catch (error) {
         logger.error('Job failed:', error);
