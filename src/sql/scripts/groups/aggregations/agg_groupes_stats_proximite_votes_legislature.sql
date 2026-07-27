@@ -1,4 +1,4 @@
--- PAS ENCORE VALIDE
+-- OK VALIDE
 
 -- ============================================================
 -- VIEW : agg_groupes_stats_proximite_votes_legislature
