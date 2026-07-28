@@ -58,21 +58,11 @@ ON CONFLICT (uid) DO UPDATE
         legislature_snapshot      = EXCLUDED.legislature_snapshot
 WHERE documents_parlementaires.row_hash IS DISTINCT FROM EXCLUDED.row_hash;
 
--- DELETE MISSING DOCUMENTS
-CREATE TEMP TABLE tmp_documents_to_delete AS
-SELECT d.uid
-FROM documents_parlementaires d
-WHERE d.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
-  AND NOT EXISTS (SELECT 1
-                  FROM documents_snapshot s
-                  WHERE s.uid = d.uid);
-
-DELETE
-FROM documents_parlementaires d
-    USING tmp_documents_to_delete x
-WHERE d.uid = x.uid;
-
-DROP TABLE tmp_documents_to_delete;
+-- Note : la suppression des documents disparus est faite plus bas dans ce
+-- fichier (juste avant COMMIT), une fois que les 6 tables enfants ci-dessous
+-- ont fini de purger leurs propres lignes obsolètes. Toutes référencent
+-- documents_parlementaires.uid en ON DELETE RESTRICT : supprimer le document
+-- ici, avant elles, ferait échouer la contrainte FK.
 
 
 -- =============================================================================
@@ -296,5 +286,31 @@ WHERE d.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
   AND NOT EXISTS (SELECT 1
                   FROM documents_depots_amendements_snapshot s
                   WHERE s.row_hash = d.row_hash);
+
+
+-- =============================================================================
+-- DELETE MISSING DOCUMENTS
+-- Tourne en dernier : les 6 tables enfants ci-dessus (documents_classifications,
+-- documents_auteurs, documents_co_signataires, documents_organes_referents,
+-- documents_imprimeries, documents_depot_amendements) référencent
+-- documents_parlementaires.uid en ON DELETE RESTRICT sans être elles-mêmes
+-- purgées automatiquement : leurs propres blocs "DELETE MISSING ..." ci-dessus
+-- doivent avoir tourné avant, sinon cette suppression échoue sur la FK.
+-- =============================================================================
+
+CREATE TEMP TABLE tmp_documents_to_delete AS
+SELECT d.uid
+FROM documents_parlementaires d
+WHERE d.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
+  AND NOT EXISTS (SELECT 1
+                  FROM documents_snapshot s
+                  WHERE s.uid = d.uid);
+
+DELETE
+FROM documents_parlementaires d
+    USING tmp_documents_to_delete x
+WHERE d.uid = x.uid;
+
+DROP TABLE tmp_documents_to_delete;
 
 COMMIT;

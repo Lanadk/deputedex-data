@@ -39,24 +39,6 @@ ON CONFLICT (uid) DO UPDATE
 WHERE dossier_parlementaire.row_hash IS DISTINCT FROM EXCLUDED.row_hash;
 
 
--- DELETE MISSING DOSSIERS
-CREATE TEMP TABLE tmp_dossiers_to_delete AS
-SELECT d.uid
-FROM dossier_parlementaire d
-WHERE d.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
-  AND NOT EXISTS (
-    SELECT 1
-    FROM dossier_parlementaire_snapshot s
-    WHERE s.uid = d.uid
-);
-
-DELETE FROM dossier_parlementaire d
-    USING tmp_dossiers_to_delete x
-WHERE d.uid = x.uid;
-
-DROP TABLE tmp_dossiers_to_delete;
-
-
 -- =============================================================================
 -- DOSSIER INITIATEUR
 -- =============================================================================
@@ -131,24 +113,6 @@ ON CONFLICT (uid) DO UPDATE
         row_hash = EXCLUDED.row_hash,
         legislature_snapshot = EXCLUDED.legislature_snapshot
 WHERE acte_legislatif.row_hash IS DISTINCT FROM EXCLUDED.row_hash;
-
-
--- DELETE MISSING ACTES
-CREATE TEMP TABLE tmp_actes_to_delete AS
-SELECT a.uid
-FROM acte_legislatif a
-WHERE a.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
-  AND NOT EXISTS (
-    SELECT 1
-    FROM acte_legislatif_snapshot s
-    WHERE s.uid = a.uid
-);
-
-DELETE FROM acte_legislatif a
-    USING tmp_actes_to_delete x
-WHERE a.uid = x.uid;
-
-DROP TABLE tmp_actes_to_delete;
 
 
 -- =============================================================================
@@ -278,5 +242,64 @@ ON CONFLICT (acte_uid) DO UPDATE
         row_hash = EXCLUDED.row_hash,
         legislature_snapshot = EXCLUDED.legislature_snapshot
 WHERE acte_decision.row_hash IS DISTINCT FROM EXCLUDED.row_hash;
+
+
+-- =============================================================================
+-- DELETE MISSING ACTES
+-- Les tables enfants (rapporteur/texte_associe/reunion/vote/decision) référencent
+-- acte_legislatif.uid sans ON DELETE CASCADE et ne sont jamais elles-mêmes purgées :
+-- il faut donc supprimer leurs lignes obsolètes avant de pouvoir supprimer l'acte,
+-- sinon la contrainte FK bloque (cas vécu : acte_reunion_acte_uid_fkey).
+-- =============================================================================
+
+CREATE TEMP TABLE tmp_actes_to_delete AS
+SELECT a.uid
+FROM acte_legislatif a
+WHERE a.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
+  AND NOT EXISTS (
+    SELECT 1
+    FROM acte_legislatif_snapshot s
+    WHERE s.uid = a.uid
+);
+
+DELETE FROM acte_rapporteur WHERE acte_uid IN (SELECT uid FROM tmp_actes_to_delete);
+DELETE FROM acte_texte_associe WHERE acte_uid IN (SELECT uid FROM tmp_actes_to_delete);
+DELETE FROM acte_reunion WHERE acte_uid IN (SELECT uid FROM tmp_actes_to_delete);
+DELETE FROM acte_vote WHERE acte_uid IN (SELECT uid FROM tmp_actes_to_delete);
+DELETE FROM acte_decision WHERE acte_uid IN (SELECT uid FROM tmp_actes_to_delete);
+
+DELETE FROM acte_legislatif a
+    USING tmp_actes_to_delete x
+WHERE a.uid = x.uid;
+
+DROP TABLE tmp_actes_to_delete;
+
+
+-- =============================================================================
+-- DELETE MISSING DOSSIERS
+-- Même raisonnement que ci-dessus pour dossier_initiateur, qui référence
+-- dossier_parlementaire.uid sans cascade. Ce bloc tourne après le nettoyage des
+-- actes ci-dessus : un dossier disparu du snapshot implique que ses actes en
+-- sont aussi absents, donc plus aucun acte_legislatif ne référence encore ce
+-- dossier_uid à ce stade.
+-- =============================================================================
+
+CREATE TEMP TABLE tmp_dossiers_to_delete AS
+SELECT d.uid
+FROM dossier_parlementaire d
+WHERE d.legislature_snapshot IN (SELECT number FROM param_current_legislatures)
+  AND NOT EXISTS (
+    SELECT 1
+    FROM dossier_parlementaire_snapshot s
+    WHERE s.uid = d.uid
+);
+
+DELETE FROM dossier_initiateur WHERE dossier_uid IN (SELECT uid FROM tmp_dossiers_to_delete);
+
+DELETE FROM dossier_parlementaire d
+    USING tmp_dossiers_to_delete x
+WHERE d.uid = x.uid;
+
+DROP TABLE tmp_dossiers_to_delete;
 
 COMMIT;

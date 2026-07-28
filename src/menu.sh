@@ -17,31 +17,35 @@ run_parser_all()                { npx ts-node ./workflow/parser/job/trtCheckColl
 run_parser_acteurs()            { npx ts-node ./workflow/parser/job/unit-parser/parseActeurs.ts; }
 run_parser_scrutins()           { npx ts-node ./workflow/parser/job/unit-parser/parseScrutins.ts; }
 run_parser_amendements()        { npx ts-node ./workflow/parser/job/unit-parser/parseAmendements.ts; }
-run_parser_dossiers()        { npx ts-node ./workflow/parser/job/unit-parser/parseDossiers.ts; }
-run_parser_documents()        { npx ts-node ./workflow/parser/job/unit-parser/parseDocuments.ts; }
+run_parser_dossiers()           { npx ts-node ./workflow/parser/job/unit-parser/parseDossiers.ts; }
+run_parser_documents()          { npx ts-node ./workflow/parser/job/unit-parser/parseDocuments.ts; }
 
 # -- Import --------------------------------------------------------------------
-run_import_all()                { ./workflow/import/job/trtImportCollecte.sh "$1"; }
-run_import_acteurs()            { ./workflow/import/job/unit-import/acteurs-import.sh; }
-run_import_scrutins()           { ./workflow/import/job/unit-import/scrutins-import.sh; }
-run_import_mandats()            { ./workflow/import/job/unit-import/mandats-import.sh; }
-run_import_amendements()        { ./workflow/import/job/unit-import/amendements-import.sh; }
-run_import_dossiers()        { ./workflow/import/job/unit-import/dossiers-import.sh; }
-run_import_documents()        { ./workflow/import/job/unit-import/documents-import.sh; }
+run_import_all()                { npx ts-node ./workflow/import/job/trtImportCollecte.ts "$1"; }
+run_import_acteurs()            { npx ts-node ./workflow/import/job/unit-import/importActeurs.ts; }
+run_import_scrutins()           { npx ts-node ./workflow/import/job/unit-import/importScrutins.ts; }
+run_import_mandats()            { npx ts-node ./workflow/import/job/unit-import/importMandats.ts; }
+run_import_amendements()        { npx ts-node ./workflow/import/job/unit-import/importAmendements.ts; }
+run_import_dossiers()           { npx ts-node ./workflow/import/job/unit-import/importDossiers.ts; }
+run_import_documents()          { npx ts-node ./workflow/import/job/unit-import/importDocuments.ts; }
 
 # -- Aggregation ---------------------------------------------------------------
-run_aggregate_all_one_shot()    { ./workflow/aggregat/job/trtAggregatCollecte-oneshot.sh; }
-run_aggregate_all_refresh()     { ./workflow/aggregat/job/trtAggregatCollecte.sh; }
-run_aggregate_acteurs_one_shot(){ ./workflow/aggregat/job/acteurs/aggregation-oneshot.sh; }
-run_aggregate_acteurs_refresh() { ./workflow/aggregat/job/acteurs/aggregation.sh; }
-run_aggregate_groupes_one_shot(){ ./workflow/aggregat/job/groupes/aggregation-oneshot.sh; }
-run_aggregate_groupes_refresh() { ./workflow/aggregat/job/groupes/aggregation.sh; }
+run_aggregate_all_one_shot()      { npx ts-node ./workflow/aggregat/job/trtAggregatCollecte-oneshot.ts; }
+run_aggregate_all_refresh()       { npx ts-node ./workflow/aggregat/job/trtAggregatCollecte.ts; }
+run_aggregate_acteurs_one_shot()  { npx ts-node ./workflow/aggregat/job/acteurs/aggregation-oneshot.ts; }
+run_aggregate_acteurs_refresh()   { npx ts-node ./workflow/aggregat/job/acteurs/aggregation.ts; }
+run_aggregate_groupes_one_shot()  { npx ts-node ./workflow/aggregat/job/groups/aggregation-oneshot.ts; }
+run_aggregate_groupes_refresh()   { npx ts-node ./workflow/aggregat/job/groups/aggregation.ts; }
+run_aggregate_calendar_one_shot() { npx ts-node ./workflow/aggregat/job/calendar/aggregation-oneshot.ts; }
+run_aggregate_calendar_refresh()  { npx ts-node ./workflow/aggregat/job/calendar/aggregation.ts; }
+run_aggregate_deputes_one_shot()  { npx ts-node ./workflow/aggregat/job/deputes/aggregation-oneshot.ts; }
+run_aggregate_deputes_refresh()   { npx ts-node ./workflow/aggregat/job/deputes/aggregation.ts; }
 
 # -- Referentiels  ---------------------------------------------------------------
-run_update_all_referentials_tables() { ./workflow/referentials/job/trtUpdateReferentials.sh; }
+run_update_all_referentials_tables() { npx ts-node ./workflow/referentials/job/trtUpdateReferentials.ts; }
 
 # -- Enrichment  ---------------------------------------------------------------
-run_all_enrichment_tables() { ./workflow/enrichment/job/trtEnrichmentCollecte.sh; }
+run_all_enrichment_tables() { npx ts-node ./workflow/enrichment/job/trtEnrichmentCollecte.ts; }
 
 # -- Dataset update monitoring  ---------------------------------------------------------------
 run_monitor_dataset_update() { npx ts-node ./workflow/_common/job/logDatasetUpdate.ts; }
@@ -109,10 +113,9 @@ parser_menu() {
         echo "1) Parse All"
         echo "2) Parse Acteurs"
         echo "3) Parse Scrutins"
-        echo "4) Parse Mandats"
-        echo "5) Parse Amendements"
-        echo "6) Parse Dossiers"
-        echo "7) Parse Documents"
+        echo "4) Parse Amendements"
+        echo "5) Parse Dossiers"
+        echo "6) Parse Documents"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -122,10 +125,9 @@ parser_menu() {
             1) run_parser_all ;;
             2) run_parser_acteurs ;;
             3) run_parser_scrutins ;;
-            4) run_parser_mandats ;;
-            5) run_parser_amendements ;;
-            6) run_parser_dossiers ;;
-            7) run_parser_documents ;;
+            4) run_parser_amendements ;;
+            5) run_parser_dossiers ;;
+            6) run_parser_documents ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac
@@ -176,6 +178,10 @@ aggregate_menu() {
         echo "4) Aggregate Acteurs (Create - One shot)"
         echo "5) Aggregate Groupes (Refresh)"
         echo "6) Aggregate Groupes (Create - One shot)"
+        echo "7) Aggregate Calendar (Refresh)"
+        echo "8) Aggregate Calendar (Create - One shot)"
+        echo "9) Aggregate Deputes (Refresh)"
+        echo "10) Aggregate Deputes (Create - One shot)"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -199,6 +205,18 @@ aggregate_menu() {
                 read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
                 echo
                 if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_groupes_one_shot; fi
+                ;;
+            7) run_aggregate_calendar_refresh ;;
+            8)
+                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
+                echo
+                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_calendar_one_shot; fi
+                ;;
+            9) run_aggregate_deputes_refresh ;;
+            10)
+                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
+                echo
+                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_deputes_one_shot; fi
                 ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;

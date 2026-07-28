@@ -17,7 +17,7 @@ export class Logger {
     }
 
     success(message: string, ...args: any[]) {
-        if (this.level <= LogLevel.INFO) console.log(`[SUCCESS✅ ]: ${message}`, ...args);
+        if (this.level <= LogLevel.INFO) console.log(`[SUCCESS ✅]: ${message}`, ...args);
     }
 
     warn(message: string, ...args: any[]) {
@@ -25,6 +25,6 @@ export class Logger {
     }
 
     error(message: string, ...args: any[]) {
-        if (this.level <= LogLevel.ERROR) console.error(`[ERROR  ❌ ]: ${message}`, ...args);
+        if (this.level <= LogLevel.ERROR) console.error(`[ERROR   ❌]: ${message}`, ...args);
     }
 }

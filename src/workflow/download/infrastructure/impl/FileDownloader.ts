@@ -47,14 +47,44 @@ export class FileDownloader implements IFileDownloader {
         return new Promise<void>((resolve, reject) => {
             const file = fs.createWriteStream(dest);
 
-            https.get(url, (response) => {
+            let settled = false;
+            let totalBytes = 0;
+            let downloadedBytes = 0;
+
+            const cleanupPartialFile = () => {
+                try {
+                    if (fs.existsSync(dest)) fs.unlinkSync(dest);
+                } catch {
+                    // best effort: don't let cleanup itself mask the real error
+                }
+            };
+
+            const fail = (err: Error) => {
+                if (settled) return;
+                settled = true;
+                file.destroy();
+                cleanupPartialFile();
+                reject(err);
+            };
+
+            const succeed = () => {
+                if (settled) return;
+                settled = true;
+                this.logger.success(`Downloaded: ${dest} (${downloadedBytes} bytes)`);
+                resolve();
+            };
+
+            const request = https.get(url, (response) => {
                 if (response.statusCode !== 200) {
-                    reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+                    response.resume();
+                    fail(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
                     return;
                 }
 
-                const totalBytes = parseInt(response.headers['content-length'] || '0', 10);
-                let downloadedBytes = 0;
+                totalBytes = parseInt(response.headers['content-length'] || '0', 10);
+
+                const truncated = () =>
+                    response.complete === false || (totalBytes > 0 && downloadedBytes !== totalBytes);
 
                 response.on('data', (chunk) => {
                     downloadedBytes += chunk.length;
@@ -67,17 +97,38 @@ export class FileDownloader implements IFileDownloader {
                     }
                 });
 
+                response.on('error', (err) => fail(err));
+
+                // 'close' se déclenche dès que la connexion sous-jacente se ferme,
+                // que le transfert se soit terminé proprement ou non (contrairement à
+                // 'error'/'end' qui ne se déclenchent pas forcément sur une coupure
+                // brutale). C'est ce qui permet de détecter un flux tronqué quand
+                // 'finish' côté writable ne surviendra jamais (response.pipe(file)
+                // n'appelle file.end() que si response émet 'end').
+                response.on('close', () => {
+                    if (settled) return;
+                    if (truncated()) {
+                        fail(new Error(`Truncated download (${downloadedBytes}/${totalBytes || '?'} bytes): ${url}`));
+                    }
+                });
+
                 response.pipe(file);
 
                 file.on('finish', () => {
-                    file.close();
-                    this.logger.success(`Downloaded: ${dest}`);
-                    resolve();
+                    file.close(() => {
+                        if (settled) return;
+                        if (truncated()) {
+                            fail(new Error(`Truncated download (${downloadedBytes}/${totalBytes || '?'} bytes): ${url}`));
+                            return;
+                        }
+                        succeed();
+                    });
                 });
-            }).on('error', (err) => {
-                fs.unlinkSync(dest);
-                reject(err);
+
+                file.on('error', (err) => fail(err));
             });
+
+            request.on('error', (err) => fail(err));
         });
     }
 }
