@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "first-setup": "npm run docker-image:build && npm run docker:db && npm run prisma:migrate-dev && npm run prisma:generate  && npm run prisma:seed",
+    "build": "tsc --noEmit",
+    "test": "echo \"No tests configured yet\" && exit 0",
     "docker:db": "ts-node local/local-db-init.ts",
     "docker-image:build": "docker build -t deputydex-db-image .",
     "drop-views": "ts-node prisma/drop-views.ts",
