@@ -12,7 +12,6 @@ yarn-error.log*
 
 
 .idea
-package-lock.json
 
 data/**/*.*json
 data/**/*.zip

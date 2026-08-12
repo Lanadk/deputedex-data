@@ -33,6 +33,7 @@
     "@types/pg-copy-streams": "^1.2.5",
     "dotenv-cli": "^11.0.0",
     "prisma": "^7.3.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
   "private": true
