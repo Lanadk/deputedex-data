@@ -40,3 +40,41 @@ jobs:
           token: ${{ secrets.CD_DISPATCH_TOKEN }}
           repository: lanadk/deputydex-cd
           event-type: deploy-etl
+
+  sync-schema:
+    needs: [build, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            schema:
+              - 'prisma/schema.prisma'
+      - name: Checkout deputydex
+        if: steps.filter.outputs.schema == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: lanadk/deputydex
+          ref: main
+          token: ${{ secrets.DEPUTYDEX_PUSH_TOKEN }}
+          path: deputydex
+      - name: Sync schema.prisma into deputydex
+        if: steps.filter.outputs.schema == 'true'
+        run: |
+          mkdir -p deputydex/app/infrastructure/db/prisma
+          cp prisma/schema.prisma deputydex/app/infrastructure/db/prisma/schema.prisma
+          cd deputydex
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add app/infrastructure/db/prisma/schema.prisma
+          if git diff --staged --quiet; then
+            echo "schema.prisma already in sync, nothing to commit"
+          else
+            git commit -m "chore: sync schema.prisma from deputydex-data@${{ github.sha }}"
+            git push
+          fi
