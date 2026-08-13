@@ -449,6 +449,17 @@ model RefGroupes {
   @@map("ref_groupes")
 }
 
+model RefGroupesFondation {
+  id              Int      @id @default(autoincrement())
+  groupe_code     String   @unique @db.VarChar(20)
+  annee_fondation Int?
+  site_officiel   String?  @db.Text
+  created_at      DateTime @default(now()) @db.Timestamp(6)
+  updated_at      DateTime @default(now()) @updatedAt @db.Timestamp(6)
+
+  @@map("ref_groupes_fondation")
+}
+
 model RefScrutinType {
   id                   Int     @id @default(autoincrement())
   type_scrutin_code    String? @db.VarChar(10)

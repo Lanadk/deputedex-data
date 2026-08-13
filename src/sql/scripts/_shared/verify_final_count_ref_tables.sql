@@ -9,5 +9,7 @@ SELECT 'ref_organe_type', COUNT(*) FROM ref_organe_type
 UNION ALL
 SELECT 'ref_groupes', COUNT(*) FROM ref_groupes
 UNION ALL
+SELECT 'ref_groupes_fondation', COUNT(*) FROM ref_groupes_fondation
+UNION ALL
 SELECT 'ref_acteurs_photos', COUNT(*) FROM ref_acteurs_photos
 ORDER BY table_name;

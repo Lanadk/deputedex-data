@@ -38,6 +38,11 @@ async function main(): Promise<void> {
         },
         {
             kind: "sqlFile",
+            label: "Creating groups fondation referentials table",
+            path: path.join(scriptsDir, "groups/referentials/ref_groupes_fondation.sql"),
+        },
+        {
+            kind: "sqlFile",
             label: "Creating acteurs photos referentials table",
             path: path.join(scriptsDir, "acteurs/referentials/ref_acteurs_photos.sql"),
         },
