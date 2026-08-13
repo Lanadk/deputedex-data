@@ -6,7 +6,10 @@
   "scripts": {
     "first-setup": "npm run docker-image:build && npm run docker:db && npm run prisma:migrate-dev && npm run prisma:generate  && npm run prisma:seed",
     "build": "tsc --noEmit",
-    "test": "echo \"No tests configured yet\" && exit 0",
+    "test": "jest --selectProjects unit",
+    "test:unit": "jest --selectProjects unit",
+    "test:integration": "jest --selectProjects integration --runInBand",
+    "test:all": "jest --runInBand",
     "docker:db": "ts-node local/local-db-init.ts",
     "docker-image:build": "docker build -t deputydex-db-image .",
     "drop-views": "ts-node prisma/drop-views.ts",
@@ -28,11 +31,14 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.7",
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.2.0",
     "@types/pg": "^8.16.0",
     "@types/pg-copy-streams": "^1.2.5",
     "dotenv-cli": "^11.0.0",
+    "jest": "^30.4.2",
     "prisma": "^7.3.0",
+    "ts-jest": "^29.4.12",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
