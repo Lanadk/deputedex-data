@@ -281,6 +281,7 @@ while true; do
     echo "  UNIT JOBS"
     echo " ----------- "
     echo "  11) See unit Jobs"
+    echo "  u)  Update Dataset Monitoring"
     echo " "
     echo "  0) Quit"
     echo " "
@@ -302,6 +303,7 @@ while true; do
         8) echo "📊 Referentials Update ..."  &&  run_update_all_referentials_tables ;;
         9) echo "📊 Enrichment All ..."  &&  run_all_enrichment_tables ;;
         11) unit_job_menu ;;
+        u|U) echo "🗓  Update Dataset Monitoring..." && run_monitor_dataset_update ;;
         0) echo "Bye! 👋" && exit 0 ;;
         *) echo "⚠️  Invalid option, please try again." ;;
     esac
