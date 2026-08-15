@@ -13,7 +13,7 @@ import { PipelineJob, Step } from "../../../_common/job/PipelineJob";
 const repoRoot = path.resolve(__dirname, "../../../../..");
 const scriptsDir = path.join(repoRoot, "src", "sql", "scripts", "deputes", "aggregations");
 
-const VIEWS = ["agg_deputes_cards"];
+const VIEWS = ["agg_deputes_cards", "agg_deputes_stats_votes"];
 
 async function main(): Promise<void> {
     const logger = new Logger(LogLevel.INFO);

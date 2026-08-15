@@ -8,7 +8,7 @@ import { PipelineJob, Step } from "../../../_common/job/PipelineJob";
 // Port TS de deputes/aggregation.sh
 // ==============================================================================
 
-const VIEWS = ["agg_deputes_cards"];
+const VIEWS = ["agg_deputes_cards", "agg_deputes_stats_votes"];
 
 async function main(): Promise<void> {
     const logger = new Logger(LogLevel.INFO);
