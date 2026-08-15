@@ -1,6 +1,6 @@
 -- OK VALIDE
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_parite AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_parite AS
 WITH legislatures_ref AS (
     SELECT pl.number AS legislature,
            CASE
@@ -35,4 +35,4 @@ FROM members_at_ref_date m
          INNER JOIN ref_groupes rg ON rg.groupe_id = m.groupe_id AND rg.groupe_legislature = m.legislature
 GROUP BY m.groupe_id, rg.code, m.legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_parite (groupe_id, groupe_code, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_parite_uq ON agg_groupes_stats_parite (groupe_id, groupe_code, legislature);

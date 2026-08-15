@@ -32,7 +32,7 @@
 --   - taux_cohesion        : score de cohésion, entre 0 et 1
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_cohesion_mensuelle AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_cohesion_mensuelle AS
 WITH cohesion_par_scrutin AS (
                               SELECT vd.groupe_id,
                                      vd.groupe_legislature                     AS legislature,
@@ -100,4 +100,4 @@ GROUP BY c.groupe_id,
          rg.libelle,
          c.mois;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_cohesion_mensuelle (groupe_id, legislature, mois);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_cohesion_mensuelle_uq ON agg_groupes_stats_cohesion_mensuelle (groupe_id, legislature, mois);

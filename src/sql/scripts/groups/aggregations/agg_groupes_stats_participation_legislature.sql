@@ -27,7 +27,7 @@
 --   - taux_participation_legislature : taux de participation global du groupe
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_participation_legislature AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_participation_legislature AS
 WITH scrutins_legislature AS (SELECT s.uid                  AS scrutin_uid,
                                      s.legislature_snapshot AS legislature,
                                      s.date_scrutin
@@ -80,4 +80,4 @@ GROUP BY pi.groupe_id,
          rg.code,
          rg.libelle;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_participation_legislature (groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_participation_legislature_uq ON agg_groupes_stats_participation_legislature (groupe_id, legislature);

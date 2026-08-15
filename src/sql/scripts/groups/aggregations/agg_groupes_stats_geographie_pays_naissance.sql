@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW agg_groupes_stats_geographie_pays_naissance AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_geographie_pays_naissance AS
 WITH legislatures_ref AS (
     SELECT pl.number AS legislature,
            CASE
@@ -55,5 +55,5 @@ GROUP BY
     m.legislature,
     a.pays_naissance;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_geographie_pays_naissance
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_geographie_pays_naissance_uq ON agg_groupes_stats_geographie_pays_naissance
     (groupe_id, groupe_code, legislature, pays);

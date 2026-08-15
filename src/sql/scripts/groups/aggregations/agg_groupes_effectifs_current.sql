@@ -25,7 +25,7 @@
 --       * photo de fin de législature pour les législatures passées
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_effectifs_current AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_effectifs_current AS
 WITH legislatures_ref AS (
     SELECT pl.number AS legislature,
            CASE
@@ -68,4 +68,4 @@ SELECT groupe_id,
        RANK() OVER (PARTITION BY legislature ORDER BY nb_acteurs DESC)::integer AS groupe_rank
 FROM grouped;
 
-CREATE UNIQUE INDEX ON agg_groupes_effectifs_current(groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_effectifs_current_uq ON agg_groupes_effectifs_current(groupe_id, legislature);

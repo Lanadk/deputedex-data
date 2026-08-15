@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW agg_groupes_stats_cumul_mandats AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_cumul_mandats AS
 WITH legislatures_ref AS (
     SELECT pl.number AS legislature,
            CASE
@@ -40,4 +40,4 @@ FROM members_at_ref_date m
          LEFT JOIN duree_par_acteur dpa ON dpa.acteur_uid = m.acteur_uid
 GROUP BY m.groupe_id, rg.code, m.legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_cumul_mandats (groupe_id, groupe_code, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_cumul_mandats_uq ON agg_groupes_stats_cumul_mandats (groupe_id, groupe_code, legislature);

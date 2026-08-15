@@ -40,4 +40,4 @@ select
 from ranked
 where rn = 1;
 
-CREATE UNIQUE INDEX ON mv_assemblee_presidents(legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS mv_assemblee_presidents_uq ON mv_assemblee_presidents(legislature);

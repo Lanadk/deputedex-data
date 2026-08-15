@@ -32,7 +32,7 @@
 --   - pourcentage   : part (%) de cette position dans l’ensemble des positions du groupe
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_votes_positions_comptables AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_votes_positions_comptables AS
 WITH positions AS (SELECT sga.groupe_id,
                           sga.groupe_legislature     AS legislature,
                           'pour'                     AS position,
@@ -99,4 +99,4 @@ FROM positions p
                    ON rg.groupe_id = p.groupe_id
                        AND rg.groupe_legislature = p.legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_votes_positions_comptables (groupe_id, legislature, position);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_votes_positions_comptables_uq ON agg_groupes_stats_votes_positions_comptables (groupe_id, legislature, position);

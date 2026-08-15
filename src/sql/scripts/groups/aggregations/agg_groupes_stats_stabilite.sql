@@ -18,7 +18,7 @@
 --       nb_acteurs_distincts_legislature / nb_acteurs_photo
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_stabilite AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_stabilite AS
 WITH legislatures_ref AS (SELECT pl.number AS legislature,
                                  CASE
                                      WHEN pl.number IN (SELECT number FROM param_current_legislatures)
@@ -151,4 +151,4 @@ FROM stabilite_brute sb
                    ON gle.groupe_id = sb.groupe_id
                        AND gle.legislature = sb.legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_stabilite (groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_stabilite_uq ON agg_groupes_stats_stabilite (groupe_id, legislature);

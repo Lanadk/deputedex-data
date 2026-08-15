@@ -14,7 +14,7 @@
 --   - nb_acteurs        : nombre de députés pour cette tranche
 --   - total_legislature : total des députés (pour % côté front)
 -- ============================================================
-CREATE MATERIALIZED VIEW agg_acteurs_stats_age AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_acteurs_stats_age AS
 SELECT m.legislature,
        m.type_organe,
        CASE
@@ -47,4 +47,4 @@ WHERE a.date_naissance IS NOT NULL
 GROUP BY m.legislature, m.type_organe, tranche_age;
 
 -- agg_acteurs_stats_age
-CREATE UNIQUE INDEX ON agg_acteurs_stats_age(legislature, type_organe, tranche_age);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_acteurs_stats_age_uq ON agg_acteurs_stats_age(legislature, type_organe, tranche_age);

@@ -28,7 +28,7 @@
 --   - taux_proximite               : score de proximité entre 0 et 1
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_proximite_votes_legislature AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_proximite_votes_legislature AS
 WITH positions_politiques AS (
     SELECT
         sg.scrutin_uid,
@@ -90,4 +90,4 @@ FROM proximite_base pb
                    ON rgb.groupe_id = pb.groupe_b_id
                        AND rgb.groupe_legislature = pb.legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_proximite_votes_legislature (legislature, groupe_a_id, groupe_b_id);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_proximite_votes_legislature_uq ON agg_groupes_stats_proximite_votes_legislature (legislature, groupe_a_id, groupe_b_id);

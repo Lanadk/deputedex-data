@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW agg_groupes_stats_tranche_age AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_tranche_age AS
 WITH
     legislatures_ref AS (
         SELECT pl.number AS legislature,
@@ -63,5 +63,5 @@ GROUP BY
     m.legislature,
     tranche_age;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_tranche_age
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_tranche_age_uq ON agg_groupes_stats_tranche_age
     (groupe_id, groupe_code, legislature, tranche_age);

@@ -32,7 +32,7 @@
 --
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_couverture_scrutins AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_couverture_scrutins AS
 WITH scrutins_legislature AS (SELECT s.legislature_snapshot AS legislature,
                                      COUNT(*)               AS nb_scrutins_legislature
                               FROM scrutins s
@@ -67,4 +67,4 @@ GROUP BY rg.groupe_id,
          rg.libelle,
          sl.nb_scrutins_legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_couverture_scrutins (groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_couverture_scrutins_uq ON agg_groupes_stats_couverture_scrutins (groupe_id, legislature);

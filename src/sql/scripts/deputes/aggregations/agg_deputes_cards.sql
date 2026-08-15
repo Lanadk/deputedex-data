@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW agg_deputes_cards AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_deputes_cards AS
 WITH legislature_ref AS (
     SELECT
         pl.number AS legislature,
@@ -101,4 +101,4 @@ FROM mandats_actifs ma
                              AND r2.legislature <= ma.legislature
                        );
 
-CREATE UNIQUE INDEX ON agg_deputes_cards (depute_uid, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_deputes_cards_uq ON agg_deputes_cards (depute_uid, legislature);

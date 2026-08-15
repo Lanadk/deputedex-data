@@ -1,6 +1,6 @@
 -- OK VALIDE
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_age AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_age AS
 WITH legislatures_ref AS (
     SELECT pl.number AS legislature,
            CASE
@@ -33,4 +33,4 @@ FROM members_at_ref_date m
 WHERE a.date_naissance IS NOT NULL
 GROUP BY m.groupe_id, rg.code, m.legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_age (groupe_id, groupe_code, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_age_uq ON agg_groupes_stats_age (groupe_id, groupe_code, legislature);

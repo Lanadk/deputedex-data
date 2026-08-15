@@ -1,6 +1,6 @@
 -- OK VALIDE
 
-CREATE MATERIALIZED VIEW agg_groupes_fiche_infos AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_fiche_infos AS
 WITH total_effectifs AS (SELECT ael.legislature,
                                 SUM(ael.nb_acteurs_photo) AS total_nb_acteurs_photo
                          FROM agg_groupes_effectifs_legislature ael
@@ -34,5 +34,5 @@ FROM ref_groupes rg
                    ON gp.groupe_id = rg.groupe_id
                        AND gp.legislature = rg.groupe_legislature;
 
-CREATE UNIQUE INDEX idx_agg_groupes_fiche_infos_unique
+CREATE UNIQUE INDEX IF NOT EXISTS idx_agg_groupes_fiche_infos_unique
     ON agg_groupes_fiche_infos (groupe_id, groupe_code, legislature);

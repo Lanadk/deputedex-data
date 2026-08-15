@@ -35,7 +35,7 @@
 --   - taux_participation_moyen_deputes  : moyenne mensuelle des taux individuels
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_participation_mensuelle AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_participation_mensuelle AS
 WITH scrutins_mensuels AS (SELECT s.uid                                     AS scrutin_uid,
                                   s.legislature_snapshot                    AS legislature,
                                   s.date_scrutin,
@@ -122,4 +122,4 @@ FROM participations_groupes_mensuelles pgm
                        AND sgm.legislature = pgm.legislature
                        AND sgm.mois = pgm.mois;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_participation_mensuelle (groupe_id, legislature, mois);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_participation_mensuelle_uq ON agg_groupes_stats_participation_mensuelle (groupe_id, legislature, mois);

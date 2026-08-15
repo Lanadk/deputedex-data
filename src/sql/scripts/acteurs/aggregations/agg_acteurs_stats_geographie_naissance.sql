@@ -21,7 +21,7 @@
 --
 -- Usage : origine géographique des députés, diversité territoriale
 -- ============================================================
-CREATE MATERIALIZED VIEW agg_acteurs_stats_geographie_naissance AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_acteurs_stats_geographie_naissance AS
 SELECT m.legislature,
        m.type_organe,
        a.pays_naissance,
@@ -48,4 +48,4 @@ WHERE a.pays_naissance IS NOT NULL
 GROUP BY m.legislature, m.type_organe, a.pays_naissance, a.departement_naissance;
 
 -- agg_acteurs_stats_geographie_naissance
-CREATE UNIQUE INDEX ON agg_acteurs_stats_geographie_naissance(legislature, type_organe, pays_naissance, departement_naissance);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_acteurs_stats_geographie_naissance_uq ON agg_acteurs_stats_geographie_naissance(legislature, type_organe, pays_naissance, departement_naissance);

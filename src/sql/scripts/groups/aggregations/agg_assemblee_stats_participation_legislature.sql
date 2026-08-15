@@ -19,11 +19,11 @@
 --   - Peut différer d’un calcul direct au niveau député
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_assemblee_stats_participation_legislature AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_assemblee_stats_participation_legislature AS
 SELECT
     legislature,
     ROUND(AVG(taux_participation_legislature), 2) AS taux_participation_moyen_assemblee
 FROM agg_groupes_stats_participation_legislature
 GROUP BY legislature;
 
-CREATE UNIQUE INDEX ON agg_assemblee_stats_participation_legislature (legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_assemblee_stats_participation_legislature_uq ON agg_assemblee_stats_participation_legislature (legislature);

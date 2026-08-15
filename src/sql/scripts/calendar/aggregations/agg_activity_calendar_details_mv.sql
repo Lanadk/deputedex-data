@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW agg_activity_calendar_details_mv AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_activity_calendar_details_mv AS
 
 -- =========================
 -- DEPUTE : VOTES
@@ -103,9 +103,9 @@ FROM amendements_co_auteurs ca
 WHERE a.date_depot IS NOT NULL;
 
 -- REFRESH CONCURRENTLY
-CREATE UNIQUE INDEX agg_activity_calendar_details_mv_uq
+CREATE UNIQUE INDEX IF NOT EXISTS agg_activity_calendar_details_mv_uq
     ON agg_activity_calendar_details_mv (entity_type, entity_id, domain, ref_id);
 
 -- PERFORMANCE DE LOOKUP
-CREATE INDEX agg_activity_calendar_details_mv_lookup
+CREATE INDEX IF NOT EXISTS agg_activity_calendar_details_mv_lookup
     ON agg_activity_calendar_details_mv (entity_id, entity_type, activity_date, legislature);

@@ -28,7 +28,7 @@
 --   - taux_participation   : % de votes exprimés (hors non-votants)
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_deputes_stats_votes AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_deputes_stats_votes AS
 SELECT
     vd.depute_id                                                                          AS depute_uid,
     s.legislature_snapshot                                                                AS legislature,
@@ -66,4 +66,4 @@ GROUP BY
     vd.depute_id,
     s.legislature_snapshot;
 
-CREATE UNIQUE INDEX ON agg_deputes_stats_votes (depute_uid, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_deputes_stats_votes_uq ON agg_deputes_stats_votes (depute_uid, legislature);

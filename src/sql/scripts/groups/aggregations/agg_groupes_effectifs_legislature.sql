@@ -28,7 +28,7 @@
 --   - nb_acteurs_photo                    : effectif à date (photo actuelle / fin de législature)
 --   - nb_acteurs_distincts_legislature    : nombre total de députés passés dans le groupe
 -- ============================================================
-CREATE MATERIALIZED VIEW agg_groupes_effectifs_legislature AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_effectifs_legislature AS
 WITH legislatures_ref AS (
     SELECT pl.number AS legislature,
            CASE
@@ -83,4 +83,4 @@ SELECT groupe_id,
        RANK() OVER (PARTITION BY legislature ORDER BY nb_acteurs_photo DESC)::integer AS groupe_rank
 FROM grouped;
 
-CREATE UNIQUE INDEX ON agg_groupes_effectifs_legislature (groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_effectifs_legislature_uq ON agg_groupes_effectifs_legislature (groupe_id, legislature);

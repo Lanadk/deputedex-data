@@ -23,7 +23,7 @@
 --   - taux_cohesion          : score de cohésion, entre 0 et 1
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_cohesion_legislature AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_cohesion_legislature AS
 WITH cohesion_par_scrutin AS (
     SELECT
         vd.groupe_id,
@@ -78,4 +78,4 @@ GROUP BY
     rg.code,
     rg.libelle;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_cohesion_legislature (groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_cohesion_legislature_uq ON agg_groupes_stats_cohesion_legislature (groupe_id, legislature);

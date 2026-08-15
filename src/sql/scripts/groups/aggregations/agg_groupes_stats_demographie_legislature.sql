@@ -35,7 +35,7 @@
 --   - taux_femmes    : part des femmes parmi les membres sexés du groupe
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_demographie_legislature AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_demographie_legislature AS
 WITH legislatures_ref AS (SELECT pl.number AS legislature,
                                  CASE
                                      WHEN pl.number IN (SELECT number FROM param_current_legislatures)
@@ -112,4 +112,4 @@ GROUP BY rg.groupe_id,
          rg.code,
          rg.libelle;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_demographie_legislature (groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_demographie_legislature_uq ON agg_groupes_stats_demographie_legislature (groupe_id, legislature);

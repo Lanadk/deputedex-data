@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW mv_groupes_presidents AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS mv_groupes_presidents AS
 WITH legislatures as (select number
                       from param_legislatures),
      presidents_groupes as (select m.uid        as mandat_uid,
@@ -52,4 +52,4 @@ order by pg.legislature desc,
          a.nom,
          a.prenom;
 
-CREATE UNIQUE INDEX ON mv_groupes_presidents(acteur_uid, legislature, mandat_uid);
+CREATE UNIQUE INDEX IF NOT EXISTS mv_groupes_presidents_uq ON mv_groupes_presidents(acteur_uid, legislature, mandat_uid);

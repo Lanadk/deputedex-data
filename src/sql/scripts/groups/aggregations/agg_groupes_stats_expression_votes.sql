@@ -54,7 +54,7 @@
 --       * agg_groupes_stats_votes_positions_politiques)
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_expression_votes AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_expression_votes AS
 WITH scrutins_legislature AS (SELECT s.legislature_snapshot AS legislature,
                                      COUNT(*)               AS nb_scrutins_legislature
                               FROM scrutins s
@@ -134,4 +134,4 @@ GROUP BY sg.groupe_id,
          rg.libelle,
          sl.nb_scrutins_legislature;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_expression_votes (groupe_id, legislature);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_expression_votes_uq ON agg_groupes_stats_expression_votes (groupe_id, legislature);

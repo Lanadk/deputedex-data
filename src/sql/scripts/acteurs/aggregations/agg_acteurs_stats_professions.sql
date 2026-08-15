@@ -17,7 +17,7 @@
 --   - total_legislature   : total des députés de la législature
 --   - pourcentage         : nb_acteurs / total_legislature * 100
 -- ============================================================
-CREATE MATERIALIZED VIEW agg_acteurs_stats_professions AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_acteurs_stats_professions AS
 SELECT m.legislature,
        m.type_organe,
        a.profession_categorie,
@@ -44,4 +44,4 @@ WHERE a.profession_categorie IS NOT NULL
 GROUP BY m.legislature, m.type_organe, a.profession_categorie, a.profession_famille;
 
 -- agg_acteurs_stats_professions
-CREATE UNIQUE INDEX ON agg_acteurs_stats_professions(legislature, type_organe, profession_categorie, profession_famille);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_acteurs_stats_professions_uq ON agg_acteurs_stats_professions(legislature, type_organe, profession_categorie, profession_famille);

@@ -29,7 +29,7 @@
 --   - pourcentage   : part (%) de cette position dans les votes politiques du groupe
 -- ============================================================
 
-CREATE MATERIALIZED VIEW agg_groupes_stats_votes_positions_politiques AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_groupes_stats_votes_positions_politiques AS
 SELECT vd.groupe_id,
        rg.libelle,
        rg.code,
@@ -58,4 +58,4 @@ GROUP BY vd.groupe_id,
          vd.groupe_legislature,
          vd.position;
 
-CREATE UNIQUE INDEX ON agg_groupes_stats_votes_positions_politiques (groupe_id, legislature, position);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_groupes_stats_votes_positions_politiques_uq ON agg_groupes_stats_votes_positions_politiques (groupe_id, legislature, position);

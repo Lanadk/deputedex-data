@@ -5,8 +5,11 @@ import { PipelineJob, Step } from "../../../_common/job/PipelineJob";
 
 // ==============================================================================
 // GROUPES / ASSEMBLEE AGGREGATION - CREATE JOB (ONE SHOT)
-// Création initiale des materialized views d'agrégation des groupes parlementaires
-// À lancer une seule fois lors du premier déploiement
+// Crée les materialized views d'agrégation des groupes parlementaires (CREATE ...
+// IF NOT EXISTS, vues + index). Idempotent : peut être rejoué sans risque (ex. à
+// chaque déploiement), les vues déjà existantes sont ignorées. Ne modifie PAS la
+// définition d'une vue déjà créée si le .sql a changé depuis — pour ça il faut un
+// DROP + recréation manuelle.
 // Port TS de groups/aggregation-oneshot.sh
 // ==============================================================================
 
@@ -61,9 +64,8 @@ async function main(): Promise<void> {
 
     await job.run(steps);
 
-    logger.success("✅ GROUPES AGGREGATION CREATED");
-    logger.warn("⚠️  NE PAS RELANCER CE JOB");
-    logger.info("👉 Pour mettre à jour : aggregation.ts");
+    logger.success("✅ GROUPES AGGREGATION CREATED (idempotent, rejouable sans risque)");
+    logger.info("👉 Pour rafraîchir les données d'une vue déjà créée : aggregation.ts");
 }
 
 export { main };

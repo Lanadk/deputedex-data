@@ -22,7 +22,7 @@
 --
 -- Usage : carte des circonscriptions, répartition territoriale
 -- ============================================================
-CREATE MATERIALIZED VIEW agg_acteurs_stats_geographie_election AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_acteurs_stats_geographie_election AS
 SELECT m.legislature,
        m.type_organe,
        m.election_region,
@@ -50,4 +50,4 @@ WHERE m.election_departement IS NOT NULL
 GROUP BY m.legislature, m.type_organe, m.election_region, m.election_region_type, m.election_departement;
 
 -- agg_acteurs_stats_geographie_election
-CREATE UNIQUE INDEX ON agg_acteurs_stats_geographie_election(legislature, type_organe, election_region, election_departement);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_acteurs_stats_geographie_election_uq ON agg_acteurs_stats_geographie_election(legislature, type_organe, election_region, election_departement);

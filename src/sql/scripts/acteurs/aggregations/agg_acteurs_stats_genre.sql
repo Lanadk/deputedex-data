@@ -14,7 +14,7 @@
 --   - nb_acteurs        : nombre de députés pour ce genre
 --   - total_legislature : total des députés (pour % côté front)
 -- ============================================================
-CREATE MATERIALIZED VIEW agg_acteurs_stats_genre AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS agg_acteurs_stats_genre AS
 SELECT m.legislature,
        m.type_organe,
        CASE
@@ -43,4 +43,4 @@ FROM acteurs a
 GROUP BY m.legislature, m.type_organe, genre;
 
 -- agg_acteurs_stats_genre
-CREATE UNIQUE INDEX ON agg_acteurs_stats_genre(legislature, type_organe, genre);
+CREATE UNIQUE INDEX IF NOT EXISTS agg_acteurs_stats_genre_uq ON agg_acteurs_stats_genre(legislature, type_organe, genre);
