@@ -189,35 +189,15 @@ aggregate_menu() {
 
         case $option in
             1) run_aggregate_all_refresh ;;
-            2)
-                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
-                echo
-                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_all_one_shot; fi
-                ;;
+            2) run_aggregate_all_one_shot ;;
             3) run_aggregate_acteurs_refresh ;;
-            4)
-                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
-                echo
-                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_acteurs_one_shot; fi
-                ;;
+            4) run_aggregate_acteurs_one_shot ;;
             5) run_aggregate_groupes_refresh ;;
-            6)
-                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
-                echo
-                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_groupes_one_shot; fi
-                ;;
+            6) run_aggregate_groupes_one_shot ;;
             7) run_aggregate_calendar_refresh ;;
-            8)
-                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
-                echo
-                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_calendar_one_shot; fi
-                ;;
+            8) run_aggregate_calendar_one_shot ;;
             9) run_aggregate_deputes_refresh ;;
-            10)
-                read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
-                echo
-                if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_deputes_one_shot; fi
-                ;;
+            10) run_aggregate_deputes_one_shot ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac
@@ -295,11 +275,7 @@ while true; do
         4) echo "🛠  Parsing All..."     && run_parser_all ;;
         5) echo "📤 Importing All..."    && run_import_all --auto-cleanup ;;
         6) echo "📊 Aggregating All..."  && run_aggregate_all_refresh ;;
-        7)
-            read -p "⚠️  ONE SHOT - À lancer une seule fois. Confirmer ? (y/n) " -n 1 -r
-            echo
-            if [[ $REPLY =~ ^[Yy]$ ]]; then run_aggregate_all_one_shot; fi
-            ;;
+        7) echo "📊 Aggregating All (Create)..." && run_aggregate_all_one_shot ;;
         8) echo "📊 Referentials Update ..."  &&  run_update_all_referentials_tables ;;
         9) echo "📊 Enrichment All ..."  &&  run_all_enrichment_tables ;;
         11) unit_job_menu ;;
