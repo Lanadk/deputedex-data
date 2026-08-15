@@ -67,5 +67,6 @@ npx ts-node src/workflow/aggregat/job/<domaine>/aggregation-oneshot.ts
 ```
 
 contre la base de prod (`DB_URL` pointé dessus). Les vues déjà existantes sont ignorées ; seule la vue
-manquante est créée. Le rôle Ansible `deploy-etl` de `deputydex-cd` exécute maintenant cette étape
-automatiquement après `prisma migrate deploy` — voir son `tasks/main.yml`.
+manquante est créée. Côté `deputydex-cd`, le rôle Ansible `deploy-etl-sql` (playbook dédié, chaîné juste après
+`deploy-etl` — qui lui reste Prisma-only) exécute maintenant cette étape automatiquement à chaque déploiement,
+avec les jobs referentials et enrichment — voir `ansible/roles/deploy-etl-sql/tasks/main.yml`.

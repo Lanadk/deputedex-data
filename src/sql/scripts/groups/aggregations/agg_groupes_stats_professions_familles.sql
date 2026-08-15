@@ -1,5 +1,5 @@
 -- OK valide
-create materialized view agg_groupes_stats_professions_familles as
+create materialized view if not exists agg_groupes_stats_professions_familles as
 with legislatures_ref as (select pl.number as legislature,
                                  case
                                      when exists (select 1
@@ -68,7 +68,7 @@ from counts c
                     on egl.groupe_id = c.groupe_id
                         and egl.legislature = c.legislature;
 
-create unique index on agg_groupes_stats_professions_familles (
+create unique index if not exists agg_groupes_stats_professions_familles_uq on agg_groupes_stats_professions_familles (
                                                                groupe_id,
                                                                legislature,
                                                                profession_famille
