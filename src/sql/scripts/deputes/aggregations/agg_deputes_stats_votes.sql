@@ -37,22 +37,22 @@ SELECT
     COUNT(*) FILTER (WHERE vd.position = 'pour')                                          AS total_pour,
     COUNT(*) FILTER (WHERE vd.position = 'contre')                                        AS total_contre,
     COUNT(*) FILTER (WHERE vd.position = 'abstention')                                    AS total_abstentions,
-    COUNT(*) FILTER (WHERE vd.position = 'nonVotant')                                     AS total_non_votants,
+    COUNT(*) FILTER (WHERE vd.position = 'non_votant')                                    AS total_non_votants,
     COUNT(*) FILTER (WHERE sg.position_majoritaire IS NOT NULL
                         AND vd.position != sg.position_majoritaire
-                        AND vd.position != 'nonVotant')                                   AS total_rebel,
+                        AND vd.position != 'non_votant')                                  AS total_rebel,
 
     ROUND(
         COUNT(*) FILTER (WHERE sg.position_majoritaire IS NOT NULL
                             AND vd.position = sg.position_majoritaire)
             * 100.0 / NULLIF(
                 COUNT(*) FILTER (WHERE sg.position_majoritaire IS NOT NULL
-                                    AND vd.position != 'nonVotant'), 0
+                                    AND vd.position != 'non_votant'), 0
             ), 1
     )                                                                                      AS taux_fidelite,
 
     ROUND(
-        COUNT(*) FILTER (WHERE vd.position != 'nonVotant')
+        COUNT(*) FILTER (WHERE vd.position != 'non_votant')
             * 100.0 / NULLIF(COUNT(*), 0), 1
     )                                                                                      AS taux_participation
 
