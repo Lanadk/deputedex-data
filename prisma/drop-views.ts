@@ -42,6 +42,7 @@ async function main() {
      -- DEPUTES VIEWS
         DROP MATERIALIZED VIEW IF EXISTS agg_deputes_cards CASCADE;
         DROP MATERIALIZED VIEW IF EXISTS agg_deputes_stats_votes CASCADE;
+        DROP MATERIALIZED VIEW IF EXISTS agg_deputes_stats_age CASCADE;
         
      -- CALENDAR ACTIVITY VIEWS
         DROP MATERIALIZED VIEW IF EXISTS agg_activity_calendar_mv CASCADE;
