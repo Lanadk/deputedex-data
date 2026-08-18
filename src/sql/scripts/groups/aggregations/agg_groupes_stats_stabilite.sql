@@ -12,6 +12,8 @@
 --     dans le calcul des entrées/sorties réelles
 --   - Une entrée réelle = un épisode dans un groupe "réel" qui ne prolonge
 --     pas le même groupe réel après un simple passage technique
+--     (l'affectation initiale d'un acteur en tout début de législature
+--     n'est PAS comptée : ce n'est pas un mouvement, juste sa photo de départ)
 --   - Une sortie réelle = une sortie d'un groupe "réel" qui n'est pas suivie
 --     d'un retour dans ce même groupe après un simple passage technique
 --   - Le taux de rotation est calculé comme :
@@ -103,7 +105,8 @@ WITH legislatures_ref AS (SELECT pl.number AS legislature,
                                  e.legislature,
 
                                  COUNT(*) FILTER (
-                                     WHERE e.prev_real_groupe_id IS DISTINCT FROM e.groupe_id
+                                     WHERE e.prev_real_groupe_id IS NOT NULL
+                                         AND e.prev_real_groupe_id IS DISTINCT FROM e.groupe_id
                                      ) AS nb_entrees_reelles,
 
                                  COUNT(*) FILTER (

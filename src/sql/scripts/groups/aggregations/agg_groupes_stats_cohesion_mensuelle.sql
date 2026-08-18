@@ -16,6 +16,11 @@
 --   - Exclusion :
 --       * des scrutins sans position majoritaire politique exploitable
 --       * des votes individuels non politiques (non-votant, etc.)
+--   - Le taux de cohésion final est la moyenne NON pondérée des taux
+--     de cohésion par scrutin (chaque scrutin = une observation,
+--     quel que soit son nombre de votants) — convention standard des
+--     indices de cohésion parlementaire (indice de Rice / Agreement
+--     Index, cf. méthodologie VoteWatch Europe et Hix/Noury/Roland)
 --   - Le taux de cohésion est exprimé sur une échelle de 0 à 1 :
 --       * 1    = alignement parfait
 --       * 0.83 = 83 % des votes alignés
@@ -85,11 +90,7 @@ SELECT c.groupe_id,
        COUNT(DISTINCT c.scrutin_uid)          AS nb_scrutins_mois,
        SUM(c.nb_votes_eligibles)              AS nb_votes_eligibles,
        SUM(c.nb_votes_alignes)                AS nb_votes_alignes,
-       ROUND(
-               SUM(c.nb_votes_alignes)::numeric
-                   / NULLIF(SUM(c.nb_votes_eligibles), 0),
-               4
-       ) AS taux_cohesion
+       ROUND(AVG(c.taux_cohesion_scrutin), 4) AS taux_cohesion
 FROM cohesion_par_scrutin_calculee c
          LEFT JOIN ref_groupes rg
                    ON rg.groupe_id = c.groupe_id

@@ -15,7 +15,9 @@ import { PipelineJob, Step } from "../../../_common/job/PipelineJob";
 const repoRoot = path.resolve(__dirname, "../../../../..");
 const scriptsDir = path.join(repoRoot, "src", "sql", "scripts", "acteurs", "aggregations");
 
-const VIEWS = [
+// Exportée pour être réutilisée par le registre de recreateView.ts (DROP +
+// recréation à la demande d'une vue déjà créée) — ne pas dupliquer ailleurs.
+export const VIEWS = [
     "agg_acteurs_stats_professions",
     "agg_acteurs_stats_genre",
     "agg_acteurs_stats_age",

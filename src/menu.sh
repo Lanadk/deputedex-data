@@ -41,6 +41,25 @@ run_aggregate_calendar_refresh()  { npx ts-node ./workflow/aggregat/job/calendar
 run_aggregate_deputes_one_shot()  { npx ts-node ./workflow/aggregat/job/deputes/aggregation-oneshot.ts; }
 run_aggregate_deputes_refresh()   { npx ts-node ./workflow/aggregat/job/deputes/aggregation.ts; }
 
+# DROP + recréation à la demande d'une/plusieurs vue(s) déjà créée(s) — seul
+# moyen de propager un changement de définition SQL sur une vue existante (ni
+# le one-shot ni le refresh ne le font, voir aggregat/repo.md). Destructif :
+# demande une confirmation explicite avant de passer --yes au job.
+run_aggregate_recreate_view() {
+    read -p "Nom(s) de vue(s) à recréer (séparés par un espace) : " views
+    if [ -z "$views" ]; then
+        echo "⚠️  Aucune vue saisie, annulé."
+        return
+    fi
+    echo "⚠️  Ceci va DROP (CASCADE) puis recréer : $views"
+    read -p "Confirmer ? (y/N) : " confirm
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        npx ts-node ./workflow/aggregat/job/recreateView.ts $views --yes
+    else
+        echo "Annulé."
+    fi
+}
+
 # -- Referentiels  ---------------------------------------------------------------
 run_update_all_referentials_tables() { npx ts-node ./workflow/referentials/job/trtUpdateReferentials.ts; }
 
@@ -182,6 +201,7 @@ aggregate_menu() {
         echo "8) Aggregate Calendar (Create - One shot)"
         echo "9) Aggregate Deputes (Refresh)"
         echo "10) Aggregate Deputes (Create - One shot)"
+        echo "11) Recreate View(s) (DROP + CREATE, on demand)"
         echo "0) Back"
         echo ""
         echo "=============================================="
@@ -198,6 +218,7 @@ aggregate_menu() {
             8) run_aggregate_calendar_one_shot ;;
             9) run_aggregate_deputes_refresh ;;
             10) run_aggregate_deputes_one_shot ;;
+            11) run_aggregate_recreate_view ;;
             0) return ;;
             *) echo "⚠️  Invalid option, please try again." ;;
         esac
@@ -256,6 +277,7 @@ while true; do
     echo "  7) Aggregate All (One shot)"
     echo "  8) Referentials Create / Update"
     echo "  9) Enrichment All"
+    echo "  10) Recreate View(s) (DROP + CREATE, on demand)"
     echo " "
     echo " ----------- "
     echo "  UNIT JOBS"
@@ -278,6 +300,7 @@ while true; do
         7) echo "📊 Aggregating All (Create)..." && run_aggregate_all_one_shot ;;
         8) echo "📊 Referentials Update ..."  &&  run_update_all_referentials_tables ;;
         9) echo "📊 Enrichment All ..."  &&  run_all_enrichment_tables ;;
+        10) run_aggregate_recreate_view ;;
         11) unit_job_menu ;;
         u|U) echo "🗓  Update Dataset Monitoring..." && run_monitor_dataset_update ;;
         0) echo "Bye! 👋" && exit 0 ;;

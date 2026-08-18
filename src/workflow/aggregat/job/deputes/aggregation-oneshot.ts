@@ -15,7 +15,9 @@ import { PipelineJob, Step } from "../../../_common/job/PipelineJob";
 const repoRoot = path.resolve(__dirname, "../../../../..");
 const scriptsDir = path.join(repoRoot, "src", "sql", "scripts", "deputes", "aggregations");
 
-const VIEWS = ["agg_deputes_cards", "agg_deputes_stats_votes", "agg_deputes_stats_age"];
+// Exportée pour être réutilisée par le registre de recreateView.ts (DROP +
+// recréation à la demande d'une vue déjà créée) — ne pas dupliquer ailleurs.
+export const VIEWS = ["agg_deputes_cards", "agg_deputes_stats_votes", "agg_deputes_stats_age"];
 
 async function main(): Promise<void> {
     const logger = new Logger(LogLevel.INFO);

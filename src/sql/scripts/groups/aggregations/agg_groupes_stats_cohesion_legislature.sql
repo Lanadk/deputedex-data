@@ -8,8 +8,18 @@
 --
 -- Logique :
 --   - Agrège la cohésion calculée au niveau des scrutins
---   - Le taux de cohésion final correspond à la moyenne des
---     cohésions par scrutin
+--   - Le taux de cohésion final correspond à la moyenne NON pondérée
+--     des taux de cohésion par scrutin (chaque scrutin = une
+--     observation, quel que soit son nombre de votants) — c'est la
+--     convention standard des indices de cohésion parlementaire
+--     (indice de Rice / Agreement Index, cf. méthodologie VoteWatch
+--     Europe et Hix/Noury/Roland), volontairement PAS un ratio
+--     SUM(alignés)/SUM(éligibles) qui ferait dominer les scrutins
+--     à forte participation
+--   - Seuls les scrutins où au moins 5 membres du groupe ont
+--     voté (pour/contre/abstention) sont pris en compte, pour
+--     éviter qu'un scrutin à très faible participation du groupe
+--     fausse le taux (aligné avec agg_groupes_stats_cohesion_mensuelle)
 --   - Le score est exprimé sur une échelle de 0 à 1
 --
 -- Colonnes :
@@ -42,7 +52,16 @@ WITH cohesion_par_scrutin AS (
                         ON sg.scrutin_uid = vd.scrutin_uid
                             AND sg.groupe_id = vd.groupe_id
                             AND sg.groupe_legislature = vd.groupe_legislature
+             INNER JOIN scrutins_groupes_agregats sga
+                        ON sga.scrutin_uid = vd.scrutin_uid
+                            AND sga.groupe_id = vd.groupe_id
+                            AND sga.groupe_legislature = vd.groupe_legislature
     WHERE vd.groupe_id IS NOT NULL
+      AND (
+              COALESCE(sga.pour, 0)
+                  + COALESCE(sga.contre, 0)
+                  + COALESCE(sga.abstentions, 0)
+          ) >= 5
     GROUP BY
         vd.groupe_id,
         vd.groupe_legislature,

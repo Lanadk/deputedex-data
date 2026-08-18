@@ -48,11 +48,36 @@ demande une confirmation explicite avant tout job « One shot ».
 
 - Idempotence = protège uniquement le cas **« nouvelle vue »**. Si la définition SQL d'une vue **déjà créée**
   est modifiée, `IF NOT EXISTS` l'ignorera silencieusement — la prod garde l'ancienne définition sans erreur
-  ni log visible. Pour propager un changement de définition, il faut un `DROP MATERIALIZED VIEW` (ou
-  `DROP ... CASCADE` si d'autres objets en dépendent) suivi d'une recréation, à faire à la main.
+  ni log visible. Pour propager un changement de définition, utiliser `recreateView.ts` (voir
+  « Modifier la définition d'une vue déjà créée » ci-dessous) plutôt qu'un `DROP` à la main.
 - Toujours ajouter une nouvelle vue aux **deux** jobs du domaine concerné (`VIEWS` dans `aggregation.ts` et
-  `aggregation-oneshot.ts`) ainsi qu'au fichier `.sql` correspondant dans `aggregations/`, pour que création
-  et refresh restent synchronisés.
+  `aggregation-oneshot.ts`, cette dernière exportée pour alimenter `registry.ts`) ainsi qu'au fichier `.sql`
+  correspondant dans `aggregations/`, pour que création, refresh et recréation restent synchronisés.
+
+## Modifier la définition d'une vue déjà créée
+
+`recreateView.ts` fait le `DROP MATERIALIZED VIEW IF EXISTS ... CASCADE` puis rejoue le `.sql` du domaine
+(résolu via `registry.ts`, construit à partir des `VIEWS` exportées des `aggregation-oneshot.ts`) — pour une
+ou plusieurs vues nommées explicitement. C'est le seul chemin qui propage un changement de définition SQL sur
+une vue déjà en prod ; ni le one-shot (`IF NOT EXISTS`) ni le refresh (`REFRESH MATERIALIZED VIEW`) ne le font.
+
+```bash
+# Dry-run par défaut : liste ce qui serait droppé/recréé, ne fait rien sans --yes
+npx ts-node src/workflow/aggregat/job/recreateView.ts agg_groupes_effectifs_current
+
+# Confirmé : DROP CASCADE + recréation
+npx ts-node src/workflow/aggregat/job/recreateView.ts agg_groupes_effectifs_current --yes
+
+# Plusieurs vues en une commande
+npx ts-node src/workflow/aggregat/job/recreateView.ts agg_deputes_cards agg_deputes_stats_age --yes
+```
+
+⚠️ `CASCADE` peut emporter d'autres objets qui dépendent de la vue (une autre vue matérialisée, un index...) —
+le job affiche la liste des vues ciblées avant d'agir, mais ne détaille pas les dépendances en cascade.
+Vérifier `pg_depend`/tester en dev si un doute. Disponible aussi via `menu.sh` → *Aggregation Jobs* → option
+*« Recreate View(s) »*, qui ajoute une confirmation `y/N` avant de passer `--yes`. Après recréation, rien
+d'autre à faire : le prochain passage du refresh (cron `updateAll.ts`) reprend le rafraîchissement des
+données normalement.
 
 ## Créer une vue manquante en prod (déploiement en attendant l'automatisation complète)
 
