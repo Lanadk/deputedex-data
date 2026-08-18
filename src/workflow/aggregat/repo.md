@@ -26,7 +26,7 @@ l'ordre : `acteurs → groupes → calendar → deputes`.
 | **acteurs** | `agg_acteurs_stats_*.sql` | `agg_acteurs_stats_professions`, `agg_acteurs_stats_genre`, `agg_acteurs_stats_age`, `agg_acteurs_stats_geographie_election`, `agg_acteurs_stats_geographie_naissance` |
 | **groups** | `agg_groupes_*.sql`, `mv_groupes_*.sql`, `agg_assemblee_*.sql`, `mv_assemblee_*.sql` | 27 vues : effectifs (courant/législature), cohésion (mensuelle/législature), couverture des scrutins, participation, expression des votes, positions politiques/comptables, démographie, stabilité, proximité de votes, professions (+ catégories/familles), présidents de groupe (`mv_groupes_presidents`), fiche infos, âge, parité, cumul de mandats, géographie (élection / naissance dép. / naissance pays), tranche d'âge, participation de l'Assemblée, présidents de l'Assemblée (`mv_assemblee_presidents`) |
 | **calendar** | `agg_activity_calendar_mv.sql`, `agg_activity_calendar_details_mv.sql` | `agg_activity_calendar_mv`, `agg_activity_calendar_details_mv` |
-| **deputes** | `agg_deputes_cards.sql` | `agg_deputes_cards` |
+| **deputes** | `agg_deputes_cards.sql`, `agg_deputes_stats_votes.sql`, `agg_deputes_stats_age.sql` | `agg_deputes_cards`, `agg_deputes_stats_votes`, `agg_deputes_stats_age` |
 
 ## Utilisation
 
