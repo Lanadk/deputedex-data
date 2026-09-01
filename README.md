@@ -22,6 +22,7 @@ migrations. Le frontend ([`deputedex`](#lécosystème-deputedex)) consomme le cl
 - [Travailler avec Prisma](#travailler-avec-prisma)
 - [Docker](#docker)
 - [Dépannage](#dépannage)
+- [Licence](#licence)
 - [L'écosystème Deputedex](#lécosystème-deputedex)
 
 ## Présentation
@@ -402,6 +403,20 @@ docker compose down -v       # ⚠️ reset complet, supprime le volume de donn�
   avec `--auto-cleanup`, ou répondre `y` à l'invite de nettoyage.
 - **Frontend désynchronisé du schéma** : vérifier que le job `sync-schema` de la CI est passé sur le dernier
   push `master`, puis que `prisma generate` a bien été relancé côté frontend.
+
+## Licence
+
+Le code source de ce dépôt est disponible sous [GNU AGPL-3.0](./LICENSE) —
+code source disponible, forkable et réutilisable, avec obligation de
+republier le code de toute version modifiée déployée publiquement.
+
+Ne sont **pas** couverts par cette licence : le nom « Députédex », son logo
+et son identité visuelle (protégés séparément, pas de réutilisation sans
+autorisation), ainsi que les données parlementaires elles-mêmes (régies par
+la Licence Ouverte / Open Licence Etalab de l'Assemblée nationale). Voir
+[`NOTICE.md`](./NOTICE.md) pour le détail du périmètre, et la page
+[Mentions légales](https://deputydex.fr/mentions-legales) du site pour la
+version publique de ces informations.
 
 ## L'écosystème Deputedex
 
